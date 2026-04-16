@@ -5,8 +5,10 @@ import {
   OnInit,
   inject,
   ChangeDetectionStrategy,
+  DestroyRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { IconComponent } from '../../../shared/components/icon.component';
 import {
   ReactiveFormsModule,
@@ -23,6 +25,7 @@ import {
   CHANNEL_TYPE_DISPLAY_NAMES,
   CHANNEL_PROVIDER_DISPLAY_NAMES,
 } from '../models';
+import { ConfigService } from '../../../core/config/config.service';
 
 @Component({
   selector: 'app-channel-form',
@@ -34,6 +37,8 @@ import {
 })
 export class ChannelFormComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly config = inject(ConfigService);
 
   readonly submit = output<CreateChannelConnectionRequestDto>();
   readonly submitUpdate = output<UpdateChannelConnectionRequest>();
@@ -47,6 +52,10 @@ export class ChannelFormComponent implements OnInit {
   form!: FormGroup;
   readonly channelTypes = [ChannelType.TELEGRAM, ChannelType.WHATSAPP];
   readonly providers = [ChannelProvider.TELEGRAM, ChannelProvider.META];
+
+  isAutoWebhookDevMode(): boolean {
+    return this.config.isTelegramAutoWebhookDevEnabled();
+  }
 
   isEditMode(): boolean {
     return this.channel() !== null;
@@ -68,9 +77,11 @@ export class ChannelFormComponent implements OnInit {
       this.form.get('webhookVerifyToken')?.setValidators(Validators.required);
     }
 
-    this.form.get('channelType')?.valueChanges.subscribe(() => {
-      this.updateValidators();
-    });
+    this.form.get('channelType')?.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.updateValidators();
+      });
 
     this.updateValidators();
   }
@@ -81,7 +92,11 @@ export class ChannelFormComponent implements OnInit {
 
     if (!this.isEditMode()) {
       if (this.isTelegram()) {
-        webhookCtrl?.setValidators([Validators.required]);
+        if (this.isAutoWebhookDevMode()) {
+          webhookCtrl?.clearValidators();
+        } else {
+          webhookCtrl?.setValidators([Validators.required]);
+        }
         accountCtrl?.clearValidators();
       } else {
         webhookCtrl?.clearValidators();

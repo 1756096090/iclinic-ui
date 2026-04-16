@@ -125,6 +125,13 @@ export class ConfigService {
   }
 
   /**
+   * Modo dev para Telegram: el backend resuelve/actualiza webhook automaticamente.
+   */
+  isTelegramAutoWebhookDevEnabled(): boolean {
+    return !!this.configSignal().telegramAutoWebhookDev;
+  }
+
+  /**
    * Retorna la URL del WebSocket STOMP (nativo, sin SockJS).
    * Usa wsUrl de env.json si está definida. Si no, la deriva de apiUrl:
    *   http://host:port/api/v1  →  ws://host:port/ws-stomp
@@ -135,6 +142,16 @@ export class ConfigService {
     if (cfg.wsUrl && cfg.wsUrl.trim() !== '') {
       return cfg.wsUrl;
     }
+
+    // If apiUrl is relative (e.g. /api/v1), derive websocket URL from current host.
+    if (cfg.apiUrl.startsWith('/')) {
+      if (typeof window !== 'undefined') {
+        const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+        return `${protocol}://${window.location.host}/ws-stomp`;
+      }
+      return '/ws-stomp';
+    }
+
     const base = cfg.apiUrl.replace(/\/api\/v1\/?$/, '');
     const wsBase = base
       .replace(/^https:\/\//, 'wss://')

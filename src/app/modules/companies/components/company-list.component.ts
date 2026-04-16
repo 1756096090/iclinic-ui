@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../../../shared/components/icon.component';
-import { CompanyUnifiedResponse, COMPANY_TYPE_DISPLAY_NAMES } from '../models';
+import { CompanyUnifiedResponse, CompanyType, COMPANY_TYPE_DISPLAY_NAMES } from '../models';
 
 @Component({
   selector: 'app-company-list',
@@ -49,5 +49,9 @@ export class CompanyListComponent {
 
   onPageChange(event: {pageIndex: number}): void {
     this.pageChange.emit(event);
+  }
+
+  getCompanyTypeLabel(type: CompanyType): string {
+    return this.COMPANY_TYPE_DISPLAY_NAMES[type] ?? type;
   }
 }

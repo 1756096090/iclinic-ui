@@ -8,12 +8,13 @@ import {
   inject,
   signal,
   ChangeDetectionStrategy,
+  PLATFORM_ID,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { IconComponent } from '../../../shared/components/icon.component';
-import { CompanyListComponent, CompanyFormComponent } from '../components';
+import { CompanyListComponent } from '../components';
 import { CompanyService } from '../services';
-import { CompanyUnifiedResponse, CreateCompanyUnifiedRequest } from '../models';
+import { CompanyUnifiedResponse } from '../models';
 
 @Component({
   selector: 'app-companies-page',
@@ -25,6 +26,7 @@ import { CompanyUnifiedResponse, CreateCompanyUnifiedRequest } from '../models';
 })
 export class CompaniesPageComponent implements OnInit {
   private readonly companyService = inject(CompanyService);
+  private readonly platformId = inject(PLATFORM_ID);
 
   readonly companies = signal<CompanyUnifiedResponse[]>([]);
   readonly isLoading = signal(false);
@@ -33,6 +35,10 @@ export class CompaniesPageComponent implements OnInit {
   readonly currentPage = signal(0);
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.loadCompanies();
   }
 

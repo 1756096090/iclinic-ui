@@ -3,7 +3,8 @@
  * Gestiona el estado de autenticación y tokens
  */
 
-import { Injectable, inject, signal, computed } from '@angular/core';
+import { Injectable, inject, computed, PLATFORM_ID, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpService } from './http.service';
 import { API_ENDPOINTS } from '../models';
 import { Observable, BehaviorSubject, tap } from 'rxjs';
@@ -24,16 +25,26 @@ export interface LoginResponse {
   };
 }
 
+export interface CurrentUserResponse {
+  id: number;
+  email: string;
+  fullName: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private readonly http = inject(HttpService);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly tokenState = signal<string | null>(
+    this.getStorageItem('accessToken')
+  );
 
   private readonly token$ = new BehaviorSubject<string | null>(
-    localStorage.getItem('accessToken')
+    this.tokenState()
   );
-  private readonly isAuthenticated$ = computed(() => !!this.token$.value);
+  private readonly isAuthenticated$ = computed(() => !!this.tokenState());
 
   /**
    * Observable del token actual
@@ -54,7 +65,7 @@ export class AuthService {
       credentials
     ).pipe(
       tap((response) => {
-        this.setToken(response.accessToken);
+        this.setSession(response);
       })
     );
   }
@@ -76,21 +87,21 @@ export class AuthService {
   /**
    * Obtiene información del usuario actual
    */
-  getCurrentUser(): Observable<any> {
-    return this.http.get(API_ENDPOINTS.AUTH.ME);
+  getCurrentUser(): Observable<CurrentUserResponse> {
+    return this.http.get<CurrentUserResponse>(API_ENDPOINTS.AUTH.ME);
   }
 
   /**
    * Refresca el token de acceso
    */
   refreshToken(): Observable<LoginResponse> {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const refreshToken = this.getStorageItem('refreshToken');
     return this.http.post<LoginResponse>(
       API_ENDPOINTS.AUTH.REFRESH,
       { refreshToken }
     ).pipe(
       tap((response) => {
-        this.setToken(response.accessToken);
+        this.setSession(response);
       })
     );
   }
@@ -99,16 +110,26 @@ export class AuthService {
    * Establece el token en el almacenamiento local
    */
   private setToken(token: string): void {
-    localStorage.setItem('accessToken', token);
+    this.setStorageItem('accessToken', token);
+    this.tokenState.set(token);
     this.token$.next(token);
+  }
+
+  private setSession(response: LoginResponse): void {
+    this.setToken(response.accessToken);
+
+    if (response.refreshToken) {
+      this.setStorageItem('refreshToken', response.refreshToken);
+    }
   }
 
   /**
    * Limpia el token del almacenamiento local
    */
   private clearToken(): void {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    this.removeStorageItem('accessToken');
+    this.removeStorageItem('refreshToken');
+    this.tokenState.set(null);
     this.token$.next(null);
   }
 
@@ -116,6 +137,30 @@ export class AuthService {
    * Obtiene el token actual
    */
   getToken(): string | null {
-    return this.token$.value;
+    return this.tokenState();
+  }
+
+  private getStorageItem(key: string): string | null {
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
+
+    return localStorage.getItem(key);
+  }
+
+  private setStorageItem(key: string, value: string): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    localStorage.setItem(key, value);
+  }
+
+  private removeStorageItem(key: string): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    localStorage.removeItem(key);
   }
 }

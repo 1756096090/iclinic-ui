@@ -4,9 +4,10 @@ import {
   inject,
   OnInit,
   ChangeDetectionStrategy,
+  PLATFORM_ID,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { IconComponent } from '../../../shared/components/icon.component';
 import { forkJoin } from 'rxjs';
@@ -37,6 +38,7 @@ export class DashboardPageComponent implements OnInit {
   private readonly branchService = inject(BranchService);
   private readonly channelService = inject(ChannelConnectionService);
   private readonly conversationService = inject(ConversationService);
+  private readonly platformId = inject(PLATFORM_ID);
 
   readonly isLoading = signal(true);
   readonly stats = signal<DashboardStats>({ companies: 0, users: 0, branches: 0, channels: 0 });
@@ -44,6 +46,11 @@ export class DashboardPageComponent implements OnInit {
   readonly skeletons = [1, 2, 3, 4];
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      this.isLoading.set(false);
+      return;
+    }
+
     forkJoin({
       companies: this.companyService.getAllCompanies(),
       users: this.userService.getAllUsers(),

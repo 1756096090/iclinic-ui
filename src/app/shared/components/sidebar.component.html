@@ -25,14 +25,55 @@
           }
         </div>
         <div class="topbar-right">
-          <button
-            class="icon-btn icon-btn--notify"
-            [class.icon-btn--active]="hasNotification()"
-            (click)="clearNotifications()"
-            [attr.aria-label]="hasNotification() ? 'Hay notificaciones nuevas' : 'Sin notificaciones nuevas'"
-          >
-            <mat-icon aria-hidden="true">{{ hasNotification() ? 'dark_mode' : 'notifications_none' }}</mat-icon>
-          </button>
+          <div class="notify-wrap">
+            <button
+              class="icon-btn icon-btn--notify"
+              [class.icon-btn--active]="hasNotification()"
+              (click)="toggleNotifications()"
+              [attr.aria-label]="hasNotification() ? 'Abrir notificaciones nuevas' : 'Abrir notificaciones'"
+            >
+              @if (unreadNotificationCount() > 0) {
+                <span class="notify-count">{{ unreadNotificationCount() > 9 ? '9+' : unreadNotificationCount() }}</span>
+              }
+              <mat-icon aria-hidden="true">notifications_none</mat-icon>
+            </button>
+
+            @if (isNotificationsOpen()) {
+              <div class="notify-backdrop" (click)="closeNotifications()"></div>
+              <section class="notify-panel" aria-label="Últimos mensajes">
+                <div class="notify-header">
+                  <div>
+                    <p class="notify-title">Notificaciones</p>
+                    <p class="notify-subtitle">Últimos mensajes recibidos</p>
+                  </div>
+                  <button class="notify-clear-btn" (click)="clearNotifications()">Marcar todo visto</button>
+                </div>
+
+                @if (latestNotifications().length === 0) {
+                  <div class="notify-empty">
+                    <mat-icon aria-hidden="true">notifications</mat-icon>
+                    <p>Sin notificaciones recientes</p>
+                  </div>
+                } @else {
+                  <div class="notify-list" role="list">
+                    @for (item of latestNotifications(); track trackNotification($index, item)) {
+                      <article class="notify-item" role="listitem">
+                        <div class="notify-item-top">
+                          <span class="notify-contact">{{ item.contactName || ('Contacto ' + item.contactId) }}</span>
+                          <span class="notify-time">{{ item.receivedAt | date: 'HH:mm' }}</span>
+                        </div>
+                        <p class="notify-preview">{{ item.preview }}</p>
+                        <div class="notify-meta">
+                          <span>Conv. #{{ item.conversationId }}</span>
+                          <span>{{ item.channelType }}</span>
+                        </div>
+                      </article>
+                    }
+                  </div>
+                }
+              </section>
+            }
+          </div>
           <button
             class="icon-btn"
             (click)="toggleTheme()"

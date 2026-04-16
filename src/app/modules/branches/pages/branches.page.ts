@@ -4,8 +4,9 @@ import {
   inject,
   signal,
   ChangeDetectionStrategy,
+  PLATFORM_ID,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { BranchListComponent, BranchFormComponent } from '../components';
 import { BranchService } from '../services';
 import { BranchUnifiedResponse, CreateBranchUnifiedRequest } from '../models';
@@ -19,6 +20,7 @@ import { BranchUnifiedResponse, CreateBranchUnifiedRequest } from '../models';
 })
 export class BranchesPageComponent implements OnInit {
   private readonly branchService = inject(BranchService);
+  private readonly platformId = inject(PLATFORM_ID);
 
   readonly branches = signal<BranchUnifiedResponse[]>([]);
   readonly isLoading = signal(false);
@@ -31,6 +33,10 @@ export class BranchesPageComponent implements OnInit {
   readonly deletingBranch = signal<BranchUnifiedResponse | null>(null);
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.loadBranches();
   }
 

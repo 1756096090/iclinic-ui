@@ -1,7 +1,11 @@
     <div class="inbox">
 
       <!-- ── Left panel: conversation list ── -->
-      <aside class="conv-panel" aria-label="Lista de conversaciones">
+      <aside
+        class="conv-panel"
+        [class.conv-panel--hidden-mobile]="isMobile() && !!selectedConversation()"
+        aria-label="Lista de conversaciones"
+      >
         <div class="conv-panel-header">
           <h1 class="panel-title">Bandeja CRM</h1>
           <span class="conv-count">{{ conversations().length }}</span>
@@ -18,7 +22,7 @@
           </div>
         } @else {
           <ul class="conv-list" role="listbox" aria-label="Conversaciones">
-            @for (conv of conversations(); track conv.id) {
+            @for (conv of sortedConversations(); track conv.id) {
               <li
                 class="conv-item"
                 [class.conv-item--selected]="selectedId() === conv.id"
@@ -35,7 +39,12 @@
                 <div class="conv-meta">
                   <div class="conv-row-top">
                     <span class="conv-name">#{{ conv.id }} — Contacto {{ conv.contactId }}</span>
-                    <span class="conv-time">{{ conv.lastMessageAt | date: 'HH:mm' }}</span>
+                    <div class="conv-top-right">
+                      @if (unreadCountForConversation(conv.id) > 0) {
+                        <span class="conv-unread-count">{{ unreadCountForConversation(conv.id) }}</span>
+                      }
+                      <span class="conv-time">{{ conversationLastActivityAt(conv) | date: 'HH:mm' }}</span>
+                    </div>
                   </div>
                   <div class="conv-row-bot">
                     <span class="badge badge--sm" [class]="'badge--' + conv.status.toLowerCase()">
@@ -51,7 +60,11 @@
       </aside>
 
       <!-- ── Right panel: messages ── -->
-      <section class="msg-panel" aria-live="polite">
+      <section
+        class="msg-panel"
+        [class.msg-panel--hidden-mobile]="isMobile() && !selectedConversation()"
+        aria-live="polite"
+      >
         @if (!selectedConversation()) {
           <div class="msg-placeholder">
             <mat-icon aria-hidden="true">mark_chat_read</mat-icon>
@@ -61,6 +74,15 @@
           <!-- Header -->
           <div class="msg-header">
             <div class="msg-header-info">
+              @if (isMobile()) {
+                <button
+                  class="msg-back-btn"
+                  aria-label="Volver a conversaciones"
+                  (click)="backToList()"
+                >
+                  <mat-icon aria-hidden="true">arrow_back</mat-icon>
+                </button>
+              }
               <span class="msg-header-title">
                 Conversación #{{ selectedConversation()!.id }}
               </span>

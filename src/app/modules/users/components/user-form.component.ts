@@ -58,47 +58,47 @@ export class UserFormComponent implements OnInit {
   readonly DOCUMENT_TYPE_DISPLAY_NAMES = DOCUMENT_TYPE_DISPLAY_NAMES;
 
   ngOnInit(): void {
-    this.initializeForm();
     this.isEditMode = !!this.initialUser();
+    this.initializeForm();
   }
 
   private initializeForm(): void {
-    this.form = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', this.isEditMode ? [] : Validators.required],
-      phone: ['', Validators.required],
-      role: ['', Validators.required],
-      userType: ['', Validators.required],
-      documentType: ['', Validators.required],
-      documentNumber: ['', Validators.required],
-      nationality: ['', Validators.required],
-      companyId: ['', Validators.required],
-      branchId: ['', Validators.required],
-    });
+    const user = this.initialUser();
+    const { firstName, lastName } = this.splitFullName(user?.fullName);
 
-    if (this.initialUser()) {
-      const user = this.initialUser()!;
-      this.form.patchValue({
-        firstName: user.fullName.split(' ')[0],
-        lastName: user.fullName.split(' ')[1] || '',
-        email: user.email,
-        phone: user.phone,
-        role: user.role,
-        userType: user.userType,
-        documentType: user.documentType,
-        documentNumber: user.documentNumber,
-        nationality: user.nationality,
-        companyId: user.companyId,
-        branchId: user.branchId,
-      });
-    }
+    this.form = this.fb.group({
+      firstName: [firstName, Validators.required],
+      lastName: [lastName, Validators.required],
+      email: [user?.email ?? '', [Validators.required, Validators.email]],
+      password: ['', this.isEditMode ? [] : Validators.required],
+      phone: [user?.phone ?? '', Validators.required],
+      role: [user?.role ?? '', Validators.required],
+      userType: [user?.userType ?? '', Validators.required],
+      documentType: [user?.documentType ?? '', Validators.required],
+      documentNumber: [user?.documentNumber ?? '', Validators.required],
+      nationality: [user?.nationality ?? '', Validators.required],
+      companyId: [user?.companyId ?? '', Validators.required],
+      branchId: [user?.branchId ?? '', Validators.required],
+    });
   }
 
   onSubmit(): void {
     if (this.form.valid) {
       this.submitted.emit(this.form.getRawValue());
     }
+  }
+
+  private splitFullName(fullName?: string): { firstName: string; lastName: string } {
+    const normalized = fullName?.trim() ?? '';
+
+    if (!normalized) {
+      return { firstName: '', lastName: '' };
+    }
+
+    const [firstName, ...rest] = normalized.split(/\s+/);
+    return {
+      firstName,
+      lastName: rest.join(' '),
+    };
   }
 }

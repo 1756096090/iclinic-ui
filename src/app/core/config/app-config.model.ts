@@ -5,6 +5,7 @@
 export interface AppConfig {
   apiUrl: string;
   wsUrl?: string;
+  telegramAutoWebhookDev?: boolean;
   appName: string;
   appVersion: string;
   enableLogging: boolean;
@@ -18,8 +19,9 @@ export interface AppConfig {
  * Used if env.json cannot be loaded
  */
 export const DEFAULT_APP_CONFIG: AppConfig = {
-  apiUrl: 'http://localhost:8080/api/v1',
+  apiUrl: '/api/v1',
   wsUrl: undefined,
+  telegramAutoWebhookDev: false,
   appName: 'iClinic',
   appVersion: '1.0.0',
   enableLogging: true,

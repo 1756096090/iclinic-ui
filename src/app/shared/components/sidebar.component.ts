@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   signal,
   ChangeDetectionStrategy,
   inject,
@@ -7,7 +8,7 @@ import {
   DestroyRef,
   effect,
 } from '@angular/core';
-import { isPlatformBrowser, NgOptimizedImage } from '@angular/common';
+import { DatePipe, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { toSignal, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -27,6 +28,7 @@ interface NavItem {
   selector: 'app-sidebar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    DatePipe,
     NgOptimizedImage,
     RouterLink,
     RouterLinkActive,
@@ -52,7 +54,11 @@ export class SidebarComponent {
 
   readonly collapsed = signal(false);
   readonly isDark = signal(true);
-  readonly hasNotification = signal(false);
+  readonly isNotificationsOpen = signal(false);
+  readonly notifications = this.wsService.notifications;
+  readonly unreadNotificationCount = this.wsService.unreadCount;
+  readonly hasNotification = computed(() => this.unreadNotificationCount() > 0);
+  readonly latestNotifications = computed(() => this.notifications().slice(0, 5));
 
   readonly gestionItems: NavItem[] = [
     { route: '/dashboard', icon: 'dashboard', label: 'Dashboard' },
@@ -85,7 +91,7 @@ export class SidebarComponent {
       this.wsService.connect(1);
       this.wsService.onNotification$
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(() => this.hasNotification.set(true));
+        .subscribe(() => this.isNotificationsOpen.set(false));
     }
 
     effect(() => {
@@ -110,6 +116,22 @@ export class SidebarComponent {
   }
 
   clearNotifications(): void {
-    this.hasNotification.set(false);
+    this.wsService.markAllNotificationsAsSeen();
+  }
+
+  toggleNotifications(): void {
+    const next = !this.isNotificationsOpen();
+    this.isNotificationsOpen.set(next);
+    if (next) {
+      this.wsService.markAllNotificationsAsSeen();
+    }
+  }
+
+  closeNotifications(): void {
+    this.isNotificationsOpen.set(false);
+  }
+
+  trackNotification(index: number, item: { messageId: number }): number {
+    return item.messageId;
   }
 }

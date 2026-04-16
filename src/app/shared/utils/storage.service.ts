@@ -17,6 +17,14 @@ interface StorageItem<T> {
 export class StorageService {
   private readonly PREFIX = 'iclinic_';
 
+  private get storage(): Storage | null {
+    if (typeof globalThis === 'undefined' || !('localStorage' in globalThis)) {
+      return null;
+    }
+
+    return globalThis.localStorage;
+  }
+
   /**
    * Guarda un item en localStorage
    */
@@ -27,7 +35,7 @@ export class StorageService {
       timestamp: Date.now(),
     };
     try {
-      localStorage.setItem(this.PREFIX + key, JSON.stringify(item));
+      this.storage?.setItem(this.PREFIX + key, JSON.stringify(item));
     } catch (error) {
       console.error('Error saving to localStorage:', error);
     }
@@ -38,7 +46,7 @@ export class StorageService {
    */
   getItem<T>(key: string): T | null {
     try {
-      const item = localStorage.getItem(this.PREFIX + key);
+      const item = this.storage?.getItem(this.PREFIX + key);
       if (!item) return null;
       const parsed: StorageItem<T> = JSON.parse(item);
       return parsed.data;
@@ -53,7 +61,7 @@ export class StorageService {
    */
   removeItem(key: string): void {
     try {
-      localStorage.removeItem(this.PREFIX + key);
+      this.storage?.removeItem(this.PREFIX + key);
     } catch (error) {
       console.error('Error removing from localStorage:', error);
     }
@@ -64,10 +72,15 @@ export class StorageService {
    */
   clear(): void {
     try {
-      const keys = Object.keys(localStorage);
+      const storage = this.storage;
+      if (!storage) {
+        return;
+      }
+
+      const keys = Object.keys(storage);
       keys.forEach((key) => {
         if (key.startsWith(this.PREFIX)) {
-          localStorage.removeItem(key);
+          storage.removeItem(key);
         }
       });
     } catch (error) {

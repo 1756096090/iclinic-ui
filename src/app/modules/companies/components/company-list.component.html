@@ -30,7 +30,7 @@
                   </td>
                   <td>
                     <span class="badge">
-                      {{ $any(COMPANY_TYPE_DISPLAY_NAMES)[$any(row).companyType] }}
+                      {{ getCompanyTypeLabel(row.companyType) }}
                     </span>
                   </td>
                   <td>

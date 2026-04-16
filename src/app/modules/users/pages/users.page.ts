@@ -4,8 +4,9 @@ import {
   inject,
   signal,
   ChangeDetectionStrategy,
+  PLATFORM_ID,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { IconComponent } from '../../../shared/components/icon.component';
 import { UserListComponent } from '../components';
 import { UserService } from '../services';
@@ -20,6 +21,7 @@ import { UserResponse } from '../models';
 })
 export class UsersPageComponent implements OnInit {
   private readonly userService = inject(UserService);
+  private readonly platformId = inject(PLATFORM_ID);
 
   readonly users = signal<UserResponse[]>([]);
   readonly isLoading = signal(false);
@@ -28,6 +30,10 @@ export class UsersPageComponent implements OnInit {
   readonly currentPage = signal(0);
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.loadUsers();
   }
 

@@ -4,7 +4,9 @@ import {
   inject,
   signal,
   ChangeDetectionStrategy,
+  PLATFORM_ID,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { ChannelListComponent } from '../components';
 import { ChannelFormComponent } from '../components/channel-form.component';
@@ -24,6 +26,7 @@ import {
 })
 export class ChannelConnectionsPageComponent implements OnInit {
   private readonly channelService = inject(ChannelConnectionService);
+  private readonly platformId = inject(PLATFORM_ID);
 
   readonly channels = signal<ChannelConnectionResponseDto[]>([]);
   readonly isLoading = signal(false);
@@ -32,6 +35,10 @@ export class ChannelConnectionsPageComponent implements OnInit {
   readonly isSaving = signal(false);
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.loadChannels();
   }
 
