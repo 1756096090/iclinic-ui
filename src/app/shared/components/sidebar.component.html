@@ -57,7 +57,12 @@
                 } @else {
                   <div class="notify-list" role="list">
                     @for (item of latestNotifications(); track trackNotification($index, item)) {
-                      <article class="notify-item" role="listitem">
+                      <button
+                        type="button"
+                        class="notify-item notify-item--action"
+                        role="listitem"
+                        (click)="openNotification(item.conversationId, item.messageId)"
+                      >
                         <div class="notify-item-top">
                           <span class="notify-contact">{{ item.contactName || ('Contacto ' + item.contactId) }}</span>
                           <span class="notify-time">{{ item.receivedAt | date: 'HH:mm' }}</span>
@@ -67,7 +72,7 @@
                           <span>Conv. #{{ item.conversationId }}</span>
                           <span>{{ item.channelType }}</span>
                         </div>
-                      </article>
+                      </button>
                     }
                   </div>
                 }

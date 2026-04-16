@@ -12,6 +12,37 @@
           <p class="empty-sub">No hay empresas registradas todavía</p>
         </div>
       } @else {
+        <div class="company-cards" role="list" aria-label="Listado de empresas en móvil">
+          @for (row of companies(); track row.id) {
+            <article class="company-card" role="listitem">
+              <div class="company-card__head">
+                <span class="cell-primary">{{ row.name }}</span>
+                <span class="badge">{{ getCompanyTypeLabel(row.companyType) }}</span>
+              </div>
+
+              <div class="company-card__meta">
+                <span class="company-card__label">{{ taxIdLabel() }}</span>
+                <code class="cell-code">{{ row.taxId }}</code>
+              </div>
+
+              <div class="actions-cell actions-cell--card">
+                <button class="action-btn action-btn--card" title="Ver detalles" (click)="onViewClicked(row)" aria-label="Ver detalles">
+                  <app-icon name="eye"></app-icon>
+                  <span>Ver</span>
+                </button>
+                <button class="action-btn action-btn--card" title="Editar" (click)="onEditClicked(row)" aria-label="Editar">
+                  <app-icon name="edit"></app-icon>
+                  <span>Editar</span>
+                </button>
+                <button class="action-btn action-btn--danger action-btn--card" title="Eliminar" (click)="onDeleteClicked(row)" aria-label="Eliminar">
+                  <app-icon name="trash"></app-icon>
+                  <span>Eliminar</span>
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+
         <div class="table-container">
           <table class="data-table">
             <thead>

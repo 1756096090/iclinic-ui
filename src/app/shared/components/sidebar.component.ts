@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { DatePipe, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { toSignal, takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 import { MatIcon } from '@angular/material/icon';
@@ -43,6 +43,7 @@ export class SidebarComponent {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly destroyRef = inject(DestroyRef);
   private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly router = inject(Router);
   private readonly wsService = inject(WebSocketService);
 
   readonly isMobile = toSignal(
@@ -129,6 +130,14 @@ export class SidebarComponent {
 
   closeNotifications(): void {
     this.isNotificationsOpen.set(false);
+  }
+
+  openNotification(conversationId: number, messageId: number): void {
+    this.wsService.markNotificationAsSeen(messageId);
+    this.isNotificationsOpen.set(false);
+    void this.router.navigate(['/conversations'], {
+      queryParams: { conversationId },
+    });
   }
 
   trackNotification(index: number, item: { messageId: number }): number {

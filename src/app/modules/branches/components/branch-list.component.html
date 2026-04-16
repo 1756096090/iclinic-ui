@@ -8,6 +8,68 @@
           <p>No hay sucursales registradas</p>
         </div>
       } @else {
+        <div class="branch-cards" role="list" aria-label="Listado de sucursales en móvil">
+          @for (row of branches(); track row.id) {
+            <article class="branch-card" role="listitem">
+              <div class="branch-card__header">
+                <div class="cell-name">
+                  <div class="branch-icon" aria-hidden="true">
+                    <app-icon name="location"></app-icon>
+                  </div>
+                  <div>
+                    <span class="cell-primary">{{ row.name }}</span>
+                    <span class="cell-secondary">{{ row.address }}</span>
+                  </div>
+                </div>
+                <span class="badge badge--type">{{ row.branchTypeDisplayName }}</span>
+              </div>
+
+              <div class="branch-card__meta">
+                <div class="branch-card__meta-item">
+                  <span class="branch-card__label">Empresa</span>
+                  <span class="branch-card__value">{{ row.companyName ?? '—' }}</span>
+                </div>
+                <div class="branch-card__meta-item">
+                  <span class="branch-card__label">Estado</span>
+                  <span class="badge" [class]="row.active ? 'badge badge--active' : 'badge badge--inactive'">
+                    {{ row.active ? 'Activa' : 'Inactiva' }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="row-actions row-actions--card">
+                <button
+                  class="action-btn action-btn--card"
+                  title="Ver detalles"
+                  [attr.aria-label]="'Ver detalles de ' + row.name"
+                  (click)="view.emit(row)"
+                >
+                  <app-icon name="eye"></app-icon>
+                  <span>Ver</span>
+                </button>
+                <button
+                  class="action-btn action-btn--card"
+                  title="Editar"
+                  [attr.aria-label]="'Editar ' + row.name"
+                  (click)="edit.emit(row)"
+                >
+                  <app-icon name="edit"></app-icon>
+                  <span>Editar</span>
+                </button>
+                <button
+                  class="action-btn action-btn--danger action-btn--card"
+                  title="Eliminar"
+                  [attr.aria-label]="'Eliminar ' + row.name"
+                  (click)="delete.emit(row)"
+                >
+                  <app-icon name="trash"></app-icon>
+                  <span>Eliminar</span>
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+
         <div class="table-scroll">
           <table class="data-table" aria-label="Tabla de sucursales">
             <thead>

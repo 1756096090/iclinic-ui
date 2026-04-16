@@ -5,3 +5,16 @@
 .users-page__subtitle {
   color: var(--c-text-2);
 }
+
+@media (max-width: 767px) {
+  .users-page .page-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-3);
+  }
+
+  .users-page .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -8,6 +8,74 @@
           <p>No hay usuarios registrados</p>
         </div>
       } @else {
+        <div class="user-cards" role="list" aria-label="Listado de usuarios en móvil">
+          @for (row of users(); track row.id) {
+            <article class="user-card" role="listitem">
+              <div class="user-card__top">
+                <div class="cell-user">
+                  <div class="avatar" aria-hidden="true">
+                    {{ row.fullName.charAt(0).toUpperCase() || '?' }}
+                  </div>
+                  <div class="cell-user-info">
+                    <span class="cell-primary">{{ row.fullName }}</span>
+                    <span class="cell-secondary">{{ row.email }}</span>
+                  </div>
+                </div>
+                <span class="badge" [class]="'badge badge--role-' + row.role.toLowerCase()">
+                  {{ roleLabel(row.role) }}
+                </span>
+              </div>
+
+              <div class="user-card__meta">
+                <div class="user-card__meta-item">
+                  <span class="user-card__label">Empresa</span>
+                  <span class="cell-primary">{{ row.companyName }}</span>
+                </div>
+                <div class="user-card__meta-item">
+                  <span class="user-card__label">Sucursal</span>
+                  <span class="cell-secondary">{{ row.branchName }}</span>
+                </div>
+                <div class="user-card__meta-item">
+                  <span class="user-card__label">Estado</span>
+                  <span class="badge" [class]="row.active ? 'badge badge--active' : 'badge badge--inactive'">
+                    {{ row.active ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="row-actions row-actions--card">
+                <button
+                  class="action-btn action-btn--card"
+                  title="Ver detalles"
+                  [attr.aria-label]="'Ver detalles de ' + row.fullName"
+                  (click)="view.emit(row)"
+                >
+                  <app-icon name="eye"></app-icon>
+                  <span>Ver</span>
+                </button>
+                <button
+                  class="action-btn action-btn--card"
+                  title="Editar"
+                  [attr.aria-label]="'Editar ' + row.fullName"
+                  (click)="edit.emit(row)"
+                >
+                  <app-icon name="edit"></app-icon>
+                  <span>Editar</span>
+                </button>
+                <button
+                  class="action-btn action-btn--danger action-btn--card"
+                  title="Eliminar"
+                  [attr.aria-label]="'Eliminar ' + row.fullName"
+                  (click)="delete.emit(row)"
+                >
+                  <app-icon name="trash"></app-icon>
+                  <span>Eliminar</span>
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+
         <div class="table-scroll">
           <table class="data-table" aria-label="Tabla de usuarios">
             <thead>

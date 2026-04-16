@@ -15,6 +15,7 @@ import { toSignal, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { ActivatedRoute } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -52,6 +53,7 @@ export class ConversationsPageComponent implements OnInit, AfterViewChecked {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly destroyRef = inject(DestroyRef);
   private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly route = inject(ActivatedRoute);
 
   readonly msgBodyRef = viewChild<ElementRef<HTMLDivElement>>('msgBody');
 
@@ -82,11 +84,22 @@ export class ConversationsPageComponent implements OnInit, AfterViewChecked {
   messageText = '';
 
   private shouldScrollBottom = false;
+  private pendingConversationId: number | null = null;
 
   ngOnInit(): void {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
+
+    this.route.queryParamMap
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((params) => {
+        const conversationId = Number(params.get('conversationId'));
+        this.pendingConversationId = Number.isInteger(conversationId) && conversationId > 0
+          ? conversationId
+          : null;
+        this.syncPendingConversationFromRoute();
+      });
 
     this.wsService.onNotification$
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -115,6 +128,8 @@ export class ConversationsPageComponent implements OnInit, AfterViewChecked {
           const refreshedSelected = convs.find((c) => c.id === currentSelectedId) ?? null;
           this.selectedConversation.set(refreshedSelected);
         }
+
+        this.syncPendingConversationFromRoute();
 
         this.loadingConvs.set(false);
       },
@@ -284,5 +299,24 @@ export class ConversationsPageComponent implements OnInit, AfterViewChecked {
     if (this.selectedId() === notification.conversationId) {
       this.loadMessages(notification.conversationId);
     }
+  }
+
+  private syncPendingConversationFromRoute(): void {
+    if (this.pendingConversationId == null) {
+      return;
+    }
+
+    const conversation = this.conversations().find((item) => item.id === this.pendingConversationId);
+    if (!conversation) {
+      return;
+    }
+
+    if (this.selectedId() !== conversation.id) {
+      this.selectConversation(conversation);
+    } else if (this.messages().length === 0) {
+      this.loadMessages(conversation.id);
+    }
+
+    this.pendingConversationId = null;
   }
 }

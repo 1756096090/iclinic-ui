@@ -36,3 +36,16 @@
   justify-content: flex-end;
   gap: 10px;
 }
+
+@media (max-width: 767px) {
+  .branches-page .page-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-3);
+  }
+
+  .branches-page .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+}

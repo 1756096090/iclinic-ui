@@ -10,3 +10,16 @@
 .companies-page__subtitle {
   color: var(--c-text-2);
 }
+
+@media (max-width: 767px) {
+  .companies-page .page-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-3);
+  }
+
+  .companies-page .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+}

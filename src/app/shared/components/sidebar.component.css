@@ -191,6 +191,22 @@
   background: var(--c-bg);
 }
 
+.notify-item--action {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.notify-item--action:hover {
+  border-color: var(--c-border);
+  background: color-mix(in srgb, var(--c-bg-hover) 72%, var(--c-bg));
+}
+
+.notify-item--action:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--c-red) 56%, transparent);
+  outline-offset: 1px;
+}
+
 .notify-item + .notify-item {
   margin-top: var(--sp-2);
 }
