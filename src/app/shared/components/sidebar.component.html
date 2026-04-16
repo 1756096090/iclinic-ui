@@ -1,0 +1,107 @@
+    <div class="root">
+
+      <!-- ── UNA sola barra superior, ancho 100% ── -->
+      <header class="topbar" role="banner">
+        <div class="topbar-left">
+          <img
+            class="brand-logo"
+            ngSrc="wolf-logo.svg"
+            width="20"
+            height="20"
+            alt="Logo iClinic"
+          />
+          <span class="brand-name">iClinic</span>
+          @if (!isMobile()) {
+            <button
+              class="icon-btn collapse-btn"
+              (click)="toggleSidebar()"
+              [attr.aria-label]="collapsed() ? 'Expandir sidebar' : 'Contraer sidebar'"
+              [attr.aria-expanded]="!collapsed()"
+              [matTooltip]="collapsed() ? 'Expandir sidebar' : 'Contraer sidebar'"
+              matTooltipPosition="below"
+            >
+              <mat-icon aria-hidden="true">{{ collapsed() ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left' }}</mat-icon>
+            </button>
+          }
+        </div>
+        <div class="topbar-right">
+          <button
+            class="icon-btn icon-btn--notify"
+            [class.icon-btn--active]="hasNotification()"
+            (click)="clearNotifications()"
+            [attr.aria-label]="hasNotification() ? 'Hay notificaciones nuevas' : 'Sin notificaciones nuevas'"
+          >
+            <mat-icon aria-hidden="true">{{ hasNotification() ? 'dark_mode' : 'notifications_none' }}</mat-icon>
+          </button>
+          <button
+            class="icon-btn"
+            (click)="toggleTheme()"
+            [attr.aria-label]="isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+          >
+            <mat-icon aria-hidden="true">{{ isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+          </button>
+        </div>
+      </header>
+
+      <!-- ── Fila: sidebar | contenido ── -->
+      <div class="body">
+
+        <aside
+          class="sidebar"
+          [class.sidebar--collapsed]="collapsed()"
+          [class.sidebar--hidden]="isMobile()"
+          aria-label="Menú lateral"
+        >
+          <nav class="nav-list" aria-label="Navegación principal">
+            @if (!collapsed()) {
+              <p class="nav-section-label">Gestión</p>
+            } @else {
+              <div class="nav-sep"></div>
+            }
+            @for (item of gestionItems; track item.route) {
+              <a
+                class="nav-item"
+                [routerLink]="item.route"
+                routerLinkActive="nav-item--active"
+                [matTooltip]="collapsed() ? item.label : ''"
+                matTooltipPosition="right"
+                [attr.aria-label]="item.label"
+              >
+                <mat-icon class="nav-icon" aria-hidden="true">{{ item.icon }}</mat-icon>
+                @if (!collapsed()) {
+                  <span class="nav-label">{{ item.label }}</span>
+                }
+              </a>
+            }
+            @if (!collapsed()) {
+              <p class="nav-section-label">CRM</p>
+            } @else {
+              <div class="nav-sep"></div>
+            }
+            @for (item of crmItems; track item.route) {
+              <a
+                class="nav-item"
+                [routerLink]="item.route"
+                routerLinkActive="nav-item--active"
+                [matTooltip]="collapsed() ? item.label : ''"
+                matTooltipPosition="right"
+                [attr.aria-label]="item.label"
+              >
+                <mat-icon class="nav-icon" aria-hidden="true">{{ item.icon }}</mat-icon>
+                @if (!collapsed()) {
+                  <span class="nav-label">{{ item.label }}</span>
+                }
+              </a>
+            }
+          </nav>
+        </aside>
+
+        <div class="content" [class.content--mobile]="isMobile()">
+          <ng-content></ng-content>
+        </div>
+
+      </div>
+
+      <!-- Bottom nav solo en móvil -->
+      <app-bottom-nav></app-bottom-nav>
+    </div>

@@ -1,0 +1,25 @@
+    <div class="page-shell companies-page">
+      <header class="page-header">
+        <div class="page-heading">
+          <h1 class="page-title companies-page__title">Empresas</h1>
+          <p class="page-subtitle companies-page__subtitle">Gestiona las empresas registradas en el sistema</p>
+        </div>
+        <button class="btn-primary" (click)="onCreateNew()" aria-label="Nueva empresa">
+          <app-icon name="plus"></app-icon>
+          Nueva Empresa
+        </button>
+      </header>
+
+      <div class="page-content">
+        <app-company-list
+          [companies]="companies()"
+          [isLoading]="isLoading()"
+          [totalElements]="totalElements()"
+          [pageSize]="pageSize()"
+          (view)="onViewCompany($event)"
+          (edit)="onEditCompany($event)"
+          (delete)="onDeleteCompany($event)"
+          (pageChange)="onPageChange($event)"
+        />
+      </div>
+    </div>

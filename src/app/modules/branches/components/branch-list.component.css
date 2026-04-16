@@ -1,0 +1,123 @@
+.list-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.loading-state,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-12);
+  color: var(--c-text-3);
+}
+
+.empty-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  opacity: 0.4;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  flex: 1;
+}
+
+.data-table {
+  width: 100%;
+  min-width: 640px;
+  background: transparent;
+}
+
+.cell-name {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.branch-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r-sm);
+  background: var(--c-bg-3);
+  color: var(--c-text-3);
+  flex-shrink: 0;
+  font-size: 18px;
+}
+
+.cell-primary {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--c-text);
+  font-weight: 500;
+}
+
+.cell-secondary {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--c-text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 var(--sp-2);
+  border-radius: 11px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.badge--active { background: rgba(16, 185, 129, 0.14); color: #34d399; }
+.badge--inactive { background: rgba(239, 68, 68, 0.14); color: #f87171; }
+.badge--type { background: rgba(139, 92, 246, 0.14); color: #a78bfa; }
+
+.row-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  justify-content: flex-end;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  border-radius: var(--r-sm);
+  color: var(--c-text-3);
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.action-btn:hover {
+  color: var(--c-text);
+  background: var(--c-bg-hover);
+}
+
+.action-btn--danger:hover {
+  color: var(--c-error);
+  background: rgba(239, 68, 68, 0.1);
+}

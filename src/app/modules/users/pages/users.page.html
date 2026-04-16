@@ -1,0 +1,23 @@
+    <div class="page-shell users-page">
+      <header class="page-header">
+        <div class="page-heading">
+          <h1 class="page-title">Usuarios</h1>
+          <p class="page-subtitle users-page__subtitle">Gestión de usuarios del sistema</p>
+        </div>
+        <button (click)="onCreateNew()" class="btn-primary">
+          <app-icon name="user"></app-icon>
+          Nuevo usuario
+        </button>
+      </header>
+
+      <app-user-list
+        [users]="users()"
+        [isLoading]="isLoading()"
+        [totalElements]="totalElements()"
+        [pageSize]="pageSize()"
+        (view)="onViewUser($event)"
+        (edit)="onEditUser($event)"
+        (delete)="onDeleteUser($event)"
+        (pageChange)="onPageChange($event)"
+      />
+    </div>

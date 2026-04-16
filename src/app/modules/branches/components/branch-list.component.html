@@ -1,0 +1,81 @@
+    <div class="list-wrap">
+      @if (isLoading()) {
+        <div class="loading-state">
+        </div>
+      } @else if (branches().length === 0) {
+        <div class="empty-state">
+          <app-icon name="location" class="empty-icon"></app-icon>
+          <p>No hay sucursales registradas</p>
+        </div>
+      } @else {
+        <div class="table-scroll">
+          <table class="data-table" aria-label="Tabla de sucursales">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Empresa</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of branches(); track row.id) {
+                <tr>
+                  <td>
+                    <div class="cell-name">
+                      <div class="branch-icon" aria-hidden="true">
+                        <app-icon name="location"></app-icon>
+                      </div>
+                      <div>
+                        <span class="cell-primary">{{ row.name }}</span>
+                        <span class="cell-secondary">{{ row.address }}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge badge--type">{{ row.branchTypeDisplayName }}</span>
+                  </td>
+                  <td>
+                    <span class="cell-primary">{{ row.companyName ?? '—' }}</span>
+                  </td>
+                  <td>
+                    <span class="badge" [class]="row.active ? 'badge--active' : 'badge--inactive'">
+                      {{ row.active ? 'Activa' : 'Inactiva' }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="row-actions">
+                      <button
+                        class="action-btn"
+                        title="Ver detalles"
+                        [attr.aria-label]="'Ver detalles de ' + row.name"
+                        (click)="view.emit(row)"
+                      >
+                        <app-icon name="eye"></app-icon>
+                      </button>
+                      <button
+                        class="action-btn"
+                        title="Editar"
+                        [attr.aria-label]="'Editar ' + row.name"
+                        (click)="edit.emit(row)"
+                      >
+                        <app-icon name="edit"></app-icon>
+                      </button>
+                      <button
+                        class="action-btn action-btn--danger"
+                        title="Eliminar"
+                        [attr.aria-label]="'Eliminar ' + row.name"
+                        (click)="delete.emit(row)"
+                      >
+                        <app-icon name="trash"></app-icon>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>

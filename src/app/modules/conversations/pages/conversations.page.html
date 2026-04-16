@@ -1,0 +1,142 @@
+    <div class="inbox">
+
+      <!-- ── Left panel: conversation list ── -->
+      <aside class="conv-panel" aria-label="Lista de conversaciones">
+        <div class="conv-panel-header">
+          <h1 class="panel-title">Bandeja CRM</h1>
+          <span class="conv-count">{{ conversations().length }}</span>
+        </div>
+
+        @if (loadingConvs()) {
+          <div class="panel-loading">
+            <mat-spinner diameter="32"></mat-spinner>
+          </div>
+        } @else if (conversations().length === 0) {
+          <div class="panel-empty">
+            <mat-icon aria-hidden="true">chat_bubble_outline</mat-icon>
+            <p>Sin conversaciones</p>
+          </div>
+        } @else {
+          <ul class="conv-list" role="listbox" aria-label="Conversaciones">
+            @for (conv of conversations(); track conv.id) {
+              <li
+                class="conv-item"
+                [class.conv-item--selected]="selectedId() === conv.id"
+                role="option"
+                [attr.aria-selected]="selectedId() === conv.id"
+                (click)="selectConversation(conv)"
+                (keydown.enter)="selectConversation(conv)"
+                (keydown.space)="selectConversation(conv)"
+                tabindex="0"
+              >
+                <div class="conv-avatar" aria-hidden="true">
+                  <mat-icon>person</mat-icon>
+                </div>
+                <div class="conv-meta">
+                  <div class="conv-row-top">
+                    <span class="conv-name">#{{ conv.id }} — Contacto {{ conv.contactId }}</span>
+                    <span class="conv-time">{{ conv.lastMessageAt | date: 'HH:mm' }}</span>
+                  </div>
+                  <div class="conv-row-bot">
+                    <span class="badge badge--sm" [class]="'badge--' + conv.status.toLowerCase()">
+                      {{ statusLabel(conv.status) }}
+                    </span>
+                    <span class="conv-channel">Canal {{ conv.channelConnectionId }}</span>
+                  </div>
+                </div>
+              </li>
+            }
+          </ul>
+        }
+      </aside>
+
+      <!-- ── Right panel: messages ── -->
+      <section class="msg-panel" aria-live="polite">
+        @if (!selectedConversation()) {
+          <div class="msg-placeholder">
+            <mat-icon aria-hidden="true">mark_chat_read</mat-icon>
+            <p>Selecciona una conversación</p>
+          </div>
+        } @else {
+          <!-- Header -->
+          <div class="msg-header">
+            <div class="msg-header-info">
+              <span class="msg-header-title">
+                Conversación #{{ selectedConversation()!.id }}
+              </span>
+              <span class="msg-header-sub">
+                Contacto {{ selectedConversation()!.contactId }} · Canal {{ selectedConversation()!.channelConnectionId }}
+              </span>
+            </div>
+            <div class="msg-header-actions">
+              <span class="badge" [class]="'badge--' + selectedConversation()!.status.toLowerCase()">
+                {{ statusLabel(selectedConversation()!.status) }}
+              </span>
+              @if (selectedConversation()!.status !== closedStatus) {
+                <button
+                  class="close-btn"
+                  matTooltip="Cerrar conversación"
+                  aria-label="Cerrar conversación"
+                  (click)="closeConversation()"
+                >
+                  <mat-icon aria-hidden="true">check_circle_outline</mat-icon>
+                  Cerrar
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Messages -->
+          <div class="msg-body" #msgBody role="log" aria-label="Mensajes">
+            @if (loadingMsgs()) {
+              <div class="msgs-loading">
+                <mat-spinner diameter="32"></mat-spinner>
+              </div>
+            } @else if (messages().length === 0) {
+              <div class="msgs-empty">
+                <mat-icon aria-hidden="true">forum</mat-icon>
+                <p>Sin mensajes en esta conversación</p>
+              </div>
+            } @else {
+              @for (msg of messages(); track msg.id) {
+                <div class="msg-bubble-wrap" [class.msg-bubble-wrap--out]="msg.direction === outbound">
+                  <div
+                    class="msg-bubble"
+                    [class.msg-bubble--out]="msg.direction === outbound"
+                    [class.msg-bubble--in]="msg.direction === inbound"
+                  >
+                    <p class="msg-content">{{ msg.content }}</p>
+                    <span class="msg-time">{{ msg.createdAt | date: 'HH:mm' }}</span>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+
+          <!-- Send input -->
+          <div class="msg-input-bar">
+            <textarea
+              class="msg-input"
+              [(ngModel)]="messageText"
+              placeholder="Escribe un mensaje…"
+              rows="1"
+              aria-label="Mensaje a enviar"
+              (keydown.enter)="onEnter($event)"
+            ></textarea>
+            <button
+              class="send-btn"
+              [disabled]="!messageText.trim() || sending()"
+              aria-label="Enviar mensaje"
+              (click)="sendMessage()"
+            >
+              @if (sending()) {
+                <mat-spinner diameter="18"></mat-spinner>
+              } @else {
+                <mat-icon aria-hidden="true">send</mat-icon>
+              }
+            </button>
+          </div>
+        }
+      </section>
+
+    </div>

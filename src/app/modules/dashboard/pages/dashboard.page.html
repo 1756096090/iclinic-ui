@@ -1,0 +1,128 @@
+    <div class="page-shell page-shell--padded dash">
+
+      <header class="page-header">
+        <div class="page-heading">
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-subtitle">Resumen general del sistema</p>
+        </div>
+      </header>
+
+      <!-- Stats grid -->
+      @if (isLoading()) {
+        <div class="stats-grid">
+          @for (i of skeletons; track i) {
+            <div class="stat-card stat-card--skeleton"></div>
+          }
+        </div>
+      } @else {
+        <div class="stats-grid">
+          <a class="stat-card" routerLink="/companies">
+            <div class="stat-icon stat-icon--blue">
+              <app-icon name="building" class="stat-icon-svg"></app-icon>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value">{{ stats().companies }}</span>
+              <span class="stat-label">Empresas</span>
+            </div>
+            <app-icon name="arrowRight" class="stat-arrow"></app-icon>
+          </a>
+
+          <a class="stat-card" routerLink="/users">
+            <div class="stat-icon stat-icon--green">
+              <app-icon name="users" class="stat-icon-svg"></app-icon>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value">{{ stats().users }}</span>
+              <span class="stat-label">Usuarios</span>
+            </div>
+            <app-icon name="arrowRight" class="stat-arrow"></app-icon>
+          </a>
+
+          <a class="stat-card" routerLink="/branches">
+            <div class="stat-icon stat-icon--orange">
+              <app-icon name="location" class="stat-icon-svg"></app-icon>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value">{{ stats().branches }}</span>
+              <span class="stat-label">Sucursales</span>
+            </div>
+            <app-icon name="arrowRight" class="stat-arrow"></app-icon>
+          </a>
+
+          <a class="stat-card" routerLink="/channels">
+            <div class="stat-icon stat-icon--red">
+              <app-icon name="hub" class="stat-icon-svg"></app-icon>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value">{{ stats().channels }}</span>
+              <span class="stat-label">Canales activos</span>
+            </div>
+            <app-icon name="arrowRight" class="stat-arrow"></app-icon>
+          </a>
+        </div>
+      }
+
+      <!-- Recent conversations -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Conversaciones recientes</h2>
+          <a class="view-all-link" routerLink="/conversations">Ver todas →</a>
+        </div>
+
+        @if (isLoading()) {
+          <div class="conv-skeleton-list">
+            @for (i of skeletons; track i) {
+              <div class="conv-skeleton"></div>
+            }
+          </div>
+        } @else if (conversations().length === 0) {
+          <div class="empty">
+            <app-icon name="chatBubble" class="empty-icon"></app-icon>
+            <p>Sin conversaciones recientes</p>
+          </div>
+        } @else {
+          <div class="conv-list">
+            @for (conv of conversations(); track conv.id) {
+              <a class="conv-row" routerLink="/conversations">
+                <div class="conv-avatar" aria-hidden="true">
+                  <app-icon name="person" class="conv-avatar-icon"></app-icon>
+                </div>
+                <div class="conv-info">
+                  <span class="conv-primary">#{{ conv.id }} · Contacto {{ conv.contactId }}</span>
+                  <span class="conv-secondary">Canal {{ conv.channelConnectionId }}</span>
+                </div>
+                <div class="conv-meta">
+                  <span [class]="'badge badge--' + statusClass(conv.status)">
+                    {{ statusLabel(conv.status) }}
+                  </span>
+                  <span class="conv-date">{{ conv.lastMessageAt | date: 'dd/MM/yy HH:mm' }}</span>
+                </div>
+              </a>
+            }
+          </div>
+        }
+      </section>
+
+      <!-- Quick access -->
+      <section class="section">
+        <h2 class="section-title">Acceso rápido</h2>
+        <div class="quick-grid">
+          <a class="quick-card" routerLink="/conversations">
+            <app-icon name="messageSquare" class="quick-card-icon"></app-icon>
+            <span>Bandeja CRM</span>
+          </a>
+          <a class="quick-card" routerLink="/channels">
+            <app-icon name="hub" class="quick-card-icon"></app-icon>
+            <span>Canales</span>
+          </a>
+          <a class="quick-card" routerLink="/users">
+            <app-icon name="users" class="quick-card-icon"></app-icon>
+            <span>Usuarios</span>
+          </a>
+          <a class="quick-card" routerLink="/branches">
+            <app-icon name="location" class="quick-card-icon"></app-icon>
+            <span>Sucursales</span>
+          </a>
+        </div>
+      </section>
+    </div>

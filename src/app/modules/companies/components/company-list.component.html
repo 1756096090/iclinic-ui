@@ -1,0 +1,56 @@
+    <div class="list-wrapper">
+      @if (isLoading()) {
+        <div class="state-center">
+          <p>Cargando empresas...</p>
+        </div>
+      } @else if (companies().length === 0) {
+        <div class="state-center">
+          <div class="empty-icon-wrap">
+            <app-icon name="building"></app-icon>
+          </div>
+          <p class="empty-title">Sin empresas</p>
+          <p class="empty-sub">No hay empresas registradas todavía</p>
+        </div>
+      } @else {
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>{{ taxIdLabel() }}</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of companies(); track row.id) {
+                <tr>
+                  <td>
+                    <span class="cell-primary">{{ row.name }}</span>
+                  </td>
+                  <td>
+                    <span class="badge">
+                      {{ $any(COMPANY_TYPE_DISPLAY_NAMES)[$any(row).companyType] }}
+                    </span>
+                  </td>
+                  <td>
+                    <code class="cell-code">{{ row.taxId }}</code>
+                  </td>
+                  <td class="actions-cell">
+                    <button class="action-btn" title="Ver detalles" (click)="onViewClicked(row)" aria-label="Ver detalles">
+                      <app-icon name="eye"></app-icon>
+                    </button>
+                    <button class="action-btn" title="Editar" (click)="onEditClicked(row)" aria-label="Editar">
+                      <app-icon name="edit"></app-icon>
+                    </button>
+                    <button class="action-btn action-btn--danger" title="Eliminar" (click)="onDeleteClicked(row)" aria-label="Eliminar">
+                      <app-icon name="trash"></app-icon>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>

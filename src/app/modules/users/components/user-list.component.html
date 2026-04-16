@@ -1,0 +1,87 @@
+    <div class="list-wrap">
+      @if (isLoading()) {
+        <div class="loading-state">
+        </div>
+      } @else if (users().length === 0) {
+        <div class="empty-state">
+          <app-icon name="users" class="empty-icon"></app-icon>
+          <p>No hay usuarios registrados</p>
+        </div>
+      } @else {
+        <div class="table-scroll">
+          <table class="data-table" aria-label="Tabla de usuarios">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Rol</th>
+                <th>Empresa</th>
+                <th>Sucursal</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of users(); track row.id) {
+                <tr>
+                  <td>
+                    <div class="cell-user">
+                      <div class="avatar" aria-hidden="true">
+                        {{ row.fullName.charAt(0).toUpperCase() || '?' }}
+                      </div>
+                      <div class="cell-user-info">
+                        <span class="cell-primary">{{ row.fullName }}</span>
+                        <span class="cell-secondary">{{ row.email }}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge" [class]="'badge--role-' + row.role.toLowerCase()">
+                      {{ roleLabel(row.role) }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="cell-primary">{{ row.companyName }}</span>
+                  </td>
+                  <td>
+                    <span class="cell-secondary">{{ row.branchName }}</span>
+                  </td>
+                  <td>
+                    <span class="badge" [class]="row.active ? 'badge--active' : 'badge--inactive'">
+                      {{ row.active ? 'Activo' : 'Inactivo' }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="row-actions">
+                      <button
+                        class="action-btn"
+                        title="Ver detalles"
+                        [attr.aria-label]="'Ver detalles de ' + row.fullName"
+                        (click)="view.emit(row)"
+                      >
+                        <app-icon name="eye"></app-icon>
+                      </button>
+                      <button
+                        class="action-btn"
+                        title="Editar"
+                        [attr.aria-label]="'Editar ' + row.fullName"
+                        (click)="edit.emit(row)"
+                      >
+                        <app-icon name="edit"></app-icon>
+                      </button>
+                      <button
+                        class="action-btn action-btn--danger"
+                        title="Eliminar"
+                        [attr.aria-label]="'Eliminar ' + row.fullName"
+                        (click)="delete.emit(row)"
+                      >
+                        <app-icon name="trash"></app-icon>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>

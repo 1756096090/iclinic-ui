@@ -1,0 +1,12 @@
+.companies-page {
+  min-height: 100%;
+}
+
+.companies-page__title {
+  font-size: 1.2rem;
+  letter-spacing: -0.3px;
+}
+
+.companies-page__subtitle {
+  color: var(--c-text-2);
+}

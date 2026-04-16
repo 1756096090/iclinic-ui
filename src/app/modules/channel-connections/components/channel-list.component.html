@@ -1,0 +1,79 @@
+    <div class="list-wrap">
+      @if (isLoading()) {
+        <div class="loading-state">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+      } @else if (channels().length === 0) {
+        <div class="empty-state">
+          <mat-icon aria-hidden="true">hub</mat-icon>
+          <p>No hay canales configurados</p>
+        </div>
+      } @else {
+        <div class="cards-grid">
+          @for (ch of channels(); track ch.id) {
+            <div class="channel-card" [class.channel-card--active]="ch.status === activeStatus">
+              <div class="card-header">
+                <div class="channel-icon" [class]="'channel-icon--' + ch.channelType.toLowerCase()">
+                  <mat-icon aria-hidden="true">{{ channelIcon(ch.channelType) }}</mat-icon>
+                </div>
+                <div class="card-info">
+                  <span class="card-title">{{ channelLabel(ch.channelType) }}</span>
+                  <span class="card-provider">{{ ch.provider }}</span>
+                </div>
+                <span class="badge" [class]="'badge--' + ch.status.toLowerCase()">
+                  {{ statusLabel(ch.status) }}
+                </span>
+              </div>
+
+              <div class="card-body">
+                <div class="detail-row">
+                  <span class="detail-label">Cuenta externa</span>
+                  <code class="detail-value">{{ ch.externalAccountId }}</code>
+                </div>
+                @if (ch.externalPhoneNumberId) {
+                  <div class="detail-row">
+                    <span class="detail-label">Número</span>
+                    <code class="detail-value">{{ ch.externalPhoneNumberId }}</code>
+                  </div>
+                }
+                <div class="detail-row">
+                  <span class="detail-label">Sucursal ID</span>
+                  <span class="detail-value">{{ ch.branchId }}</span>
+                </div>
+              </div>
+
+              <div class="card-footer">
+                <button
+                  class="toggle-btn"
+                  [class.toggle-btn--active]="ch.status === activeStatus"
+                  [attr.aria-label]="ch.status === activeStatus ? 'Desactivar canal' : 'Activar canal'"
+                  [matTooltip]="ch.status === activeStatus ? 'Desactivar' : 'Activar'"
+                  (click)="onToggle(ch)"
+                >
+                  <mat-icon aria-hidden="true">{{ ch.status === activeStatus ? 'toggle_on' : 'toggle_off' }}</mat-icon>
+                  {{ ch.status === activeStatus ? 'Activo' : 'Activar' }}
+                </button>
+                <div class="card-actions">
+                  <button
+                    class="action-btn"
+                    matTooltip="Editar"
+                    [attr.aria-label]="'Editar canal ' + channelLabel(ch.channelType)"
+                    (click)="edit.emit(ch)"
+                  >
+                    <mat-icon aria-hidden="true">edit</mat-icon>
+                  </button>
+                  <button
+                    class="action-btn action-btn--danger"
+                    matTooltip="Eliminar"
+                    [attr.aria-label]="'Eliminar canal ' + channelLabel(ch.channelType)"
+                    (click)="delete.emit(ch)"
+                  >
+                    <mat-icon aria-hidden="true">delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>

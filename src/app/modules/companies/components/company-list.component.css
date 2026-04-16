@@ -1,0 +1,112 @@
+.list-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.state-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-12) var(--sp-6);
+  min-height: 300px;
+}
+
+.empty-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--r-lg);
+  background: var(--c-bg-3);
+  border: 1px solid var(--c-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+
+.empty-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--c-text);
+  margin: 0;
+}
+
+.empty-sub {
+  font-size: 0.8rem;
+  color: var(--c-text-3);
+  margin: 0;
+}
+
+.table-container {
+  flex: 1;
+  overflow-x: auto;
+  border-radius: var(--r-md) var(--r-md) 0 0;
+  border: 1px solid var(--c-border);
+  border-bottom: none;
+}
+
+.data-table {
+  width: 100%;
+  min-width: 500px;
+}
+
+.cell-primary {
+  font-weight: 500;
+  color: var(--c-text);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  background: var(--c-bg-4);
+  color: var(--c-text-2);
+}
+
+.cell-code {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--c-text-2);
+  background: var(--c-bg-3);
+  padding: 2px 6px;
+  border-radius: var(--r-xs);
+}
+
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  justify-content: flex-end;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: var(--r-sm);
+  color: var(--c-text-3);
+  cursor: pointer;
+  transition: all 200ms ease;
+  font-size: 16px;
+}
+
+.action-btn:hover {
+  color: var(--c-text);
+  background: var(--c-bg-hover);
+}
+
+.action-btn--danger:hover {
+  color: var(--c-error);
+  background: rgba(239, 68, 68, 0.1);
+}

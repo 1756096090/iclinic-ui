@@ -1,0 +1,133 @@
+    <div class="channel-form-backdrop">
+      <div class="channel-form-panel">
+
+        <div class="channel-form-header">
+          <h2 class="channel-form-title">
+            {{ isEditMode() ? 'Editar Canal' : 'Nuevo Canal' }}
+          </h2>
+          <button type="button" (click)="onCancel()" class="btn-icon channel-form-close">
+            <app-icon name="x" class="channel-form-close-icon"></app-icon>
+          </button>
+        </div>
+
+        <form [formGroup]="form" class="channel-form-body">
+
+          @if (!isEditMode()) {
+            <div class="form-field">
+              <label class="form-label">
+                Tipo de Canal
+              </label>
+              <select formControlName="channelType" class="form-input">
+                @for (type of channelTypes; track type) {
+                  <option [value]="type">{{ getChannelTypeLabel(type) }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label">
+                Proveedor
+              </label>
+              <select formControlName="provider" class="form-input">
+                @for (prov of providers; track prov) {
+                  <option [value]="prov">{{ getProviderLabel(prov) }}</option>
+                }
+              </select>
+            </div>
+          }
+
+          @if (isTelegram()) {
+            <div class="form-field">
+              <label class="form-label">
+                Token del Bot de Telegram
+                @if (!isEditMode()) { <span class="channel-form-required">*</span> }
+              </label>
+              <input type="password" formControlName="accessToken"
+                     [placeholder]="isEditMode() ? 'Dejar en blanco para mantener el actual' : '123456789:ABCDEFGHIJKLMNOPQRSTuvwxyz...'"
+                     class="form-input" />
+              @if (form.get('accessToken')?.invalid && form.get('accessToken')?.touched) {
+                <p class="channel-form-hint channel-form-hint--info">El token es requerido</p>
+              }
+            </div>
+
+            <div class="form-field">
+              <label class="form-label">
+                URL Base del Webhook
+                @if (!isEditMode()) { <span class="channel-form-required">*</span> }
+              </label>
+              <input type="url" formControlName="webhookBaseUrl"
+                     [placeholder]="isEditMode() ? 'Nueva URL para re-registrar el webhook' : 'https://xxxxx.ngrok-free.app'"
+                     class="form-input" />
+              @if (form.get('webhookBaseUrl')?.invalid && form.get('webhookBaseUrl')?.touched) {
+                <p class="channel-form-hint channel-form-hint--info">La URL base es requerida</p>
+              }
+              @if (isEditMode()) {
+                <p class="channel-form-hint">
+                  Si se proporciona, se re-registrará el webhook en Telegram y el canal se activará.
+                </p>
+              } @else {
+                <p class="channel-form-hint">
+                  Ej: https://xxxxx.ngrok-free.app
+                </p>
+              }
+            </div>
+          } @else {
+            @if (!isEditMode()) {
+              <div class="form-field">
+                <label class="form-label">
+                  ID de Cuenta Externo <span class="channel-form-required">*</span>
+                </label>
+                <input type="text" formControlName="externalAccountId"
+                       placeholder="ID del proveedor"
+                       class="form-input" />
+                @if (form.get('externalAccountId')?.invalid && form.get('externalAccountId')?.touched) {
+                  <p class="channel-form-hint channel-form-hint--info">El ID de cuenta es requerido</p>
+                }
+              </div>
+            }
+
+            <div class="form-field">
+              <label class="form-label">
+                Token de Acceso
+                @if (!isEditMode()) { <span class="channel-form-required">*</span> }
+              </label>
+              <input type="password" formControlName="accessToken"
+                     [placeholder]="isEditMode() ? 'Dejar en blanco para mantener el actual' : ''"
+                     class="form-input" />
+              @if (form.get('accessToken')?.invalid && form.get('accessToken')?.touched) {
+                <p class="channel-form-hint channel-form-hint--info">El token es requerido</p>
+              }
+            </div>
+          }
+
+          <div class="form-field">
+            <label class="form-label">
+              Token de Verificación
+              @if (!isEditMode()) { <span class="channel-form-required">*</span> }
+            </label>
+            <input type="password" formControlName="webhookVerifyToken"
+                   [placeholder]="isEditMode() ? 'Dejar en blanco para mantener el actual' : 'token-aleatorio-seguro'"
+                   class="form-input" />
+            @if (form.get('webhookVerifyToken')?.invalid && form.get('webhookVerifyToken')?.touched) {
+              <p class="channel-form-hint channel-form-hint--info">El token de verificación es requerido</p>
+            }
+          </div>
+        </form>
+
+        <div class="channel-form-footer">
+          <button type="button" (click)="onCancel()" class="btn-secondary channel-form-action">
+            Cancelar
+          </button>
+          <button type="button" (click)="onSubmit()"
+                  [disabled]="form.invalid || isSubmitting()"
+                  class="channel-form-submit channel-form-action">
+            @if (isSubmitting()) {
+              <span class="spinner"></span>
+              {{ isEditMode() ? 'Guardando...' : 'Conectando...' }}
+            } @else {
+              {{ isEditMode() ? 'Guardar cambios' : 'Conectar Canal' }}
+            }
+          </button>
+        </div>
+      </div>
+    </div>

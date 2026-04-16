@@ -1,0 +1,133 @@
+    <!-- Backdrop -->
+    <div
+      class="modal-backdrop"
+      (click)="cancelled.emit()"
+      role="presentation"
+    ></div>
+
+    <!-- Modal panel -->
+    <div class="dialog-panel branch-form-dialog" role="dialog" aria-modal="true" [attr.aria-labelledby]="'modal-title'">
+
+      <!-- Header -->
+      <div class="dialog-header">
+        <h2 id="modal-title" class="dialog-title">
+          {{ isEditMode ? 'Editar sucursal' : 'Nueva sucursal' }}
+        </h2>
+        <button class="btn-icon dialog-close" type="button" (click)="cancelled.emit()" aria-label="Cerrar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="dialog-body">
+        <div class="form-stack">
+
+          <!-- Empresa -->
+          <div class="form-field">
+            <label class="form-label" for="f-company">Empresa <span class="form-required">*</span></label>
+            <select
+              id="f-company"
+              class="form-input"
+              formControlName="companyId"
+            >
+              <option value="" disabled>Selecciona una empresa...</option>
+              @for (company of companies(); track company.id) {
+                <option [value]="company.id">{{ company.name }}</option>
+              }
+            </select>
+            @if (form.get('companyId')?.hasError('required') && form.get('companyId')?.touched) {
+              <p class="form-error">La empresa es requerida</p>
+            }
+          </div>
+
+          <!-- Nombre -->
+          <div class="form-field">
+            <label class="form-label" for="f-name">Nombre <span class="form-required">*</span></label>
+            <input
+              id="f-name"
+              class="form-input"
+              [class.form-input--error]="form.get('name')?.invalid && form.get('name')?.touched"
+              formControlName="name"
+              placeholder="Ej: Sucursal Centro"
+              autocomplete="off"
+            />
+            @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
+              <p class="form-error">El nombre es requerido</p>
+            }
+          </div>
+
+          <!-- Dirección -->
+          <div class="form-field">
+            <label class="form-label" for="f-address">Dirección <span class="form-required">*</span></label>
+            <input
+              id="f-address"
+              class="form-input"
+              [class.form-input--error]="form.get('address')?.invalid && form.get('address')?.touched"
+              formControlName="address"
+              placeholder="Ej: Av. Principal 123"
+              autocomplete="off"
+            />
+            @if (form.get('address')?.hasError('required') && form.get('address')?.touched) {
+              <p class="form-error">La dirección es requerida</p>
+            }
+          </div>
+
+          <!-- Tipo -->
+          <div class="form-field">
+            <label class="form-label" for="f-type">Tipo de sucursal <span class="form-required">*</span></label>
+            <select
+              id="f-type"
+              class="form-input"
+              formControlName="branchType"
+            >
+              <option value="" disabled>Selecciona un tipo...</option>
+              @for (type of branchTypes; track type) {
+                <option [value]="type">{{ BRANCH_TYPE_DISPLAY_NAMES[type] }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Capacidad de camas (solo para HOSPITAL) -->
+          @if (form.get('branchType')?.value === 'HOSPITAL') {
+            <div class="form-field">
+              <label class="form-label" for="f-beds">Capacidad de camas</label>
+              <input
+                id="f-beds"
+                class="form-input"
+                type="number"
+                formControlName="bedCapacity"
+                placeholder="0"
+                min="0"
+              />
+            </div>
+          }
+
+          <!-- Tiene laboratorio -->
+          <div class="form-field form-field--checkbox">
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                class="checkbox-input"
+                formControlName="hasLaboratory"
+              />
+              <span class="checkbox-text">Tiene laboratorio</span>
+            </label>
+          </div>
+
+        </div>
+      </form>
+
+      <!-- Footer -->
+      <div class="dialog-footer">
+        <button class="btn-secondary" type="button" (click)="cancelled.emit()" [disabled]="isLoading()">
+          Cancelar
+        </button>
+        <button class="btn-primary" type="button" (click)="onSubmit()" [disabled]="form.invalid || isLoading()">
+          @if (isLoading()) {
+            <span class="spinner"></span>
+          }
+          {{ isEditMode ? 'Guardar cambios' : 'Crear sucursal' }}
+        </button>
+      </div>
+
+    </div>

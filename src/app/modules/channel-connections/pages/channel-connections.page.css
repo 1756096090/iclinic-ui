@@ -1,0 +1,13 @@
+.channels-page {
+  min-height: 100%;
+}
+
+.channels-page .page-header {
+  align-items: flex-start;
+}
+
+.btn-primary mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}

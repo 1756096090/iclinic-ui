@@ -1,0 +1,7 @@
+.users-page {
+  min-height: 100%;
+}
+
+.users-page__subtitle {
+  color: var(--c-text-2);
+}

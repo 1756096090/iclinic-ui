@@ -1,0 +1,31 @@
+    <div class="page-shell channels-page">
+      <header class="page-header">
+        <div class="page-heading">
+          <h1 class="page-title">Canales</h1>
+          <p class="page-subtitle">Conexiones CRM omnicanal</p>
+        </div>
+        <button class="btn-primary" (click)="onCreateNew()">
+          <mat-icon aria-hidden="true">add</mat-icon>
+          Nuevo canal
+        </button>
+      </header>
+
+      <app-channel-list
+        [channels]="channels()"
+        [isLoading]="isLoading()"
+        (edit)="onEditChannel($event)"
+        (delete)="onDeleteChannel($event)"
+        (toggleStatus)="onToggleStatus($event)"
+      />
+    </div>
+
+    <!-- Modal form (crear o editar) -->
+    @if (isFormOpen()) {
+      <app-channel-form
+        [channel]="editingChannel()"
+        [isSubmitting]="isSaving()"
+        (submit)="onSaveCreate($event)"
+        (submitUpdate)="onSaveEdit($event)"
+        (cancel)="closeForm()"
+      />
+    }

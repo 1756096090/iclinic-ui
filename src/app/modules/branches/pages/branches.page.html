@@ -1,0 +1,47 @@
+    <div class="page-shell branches-page">
+      <header class="page-header">
+        <div class="page-heading">
+          <h1 class="page-title">Sucursales</h1>
+          <p class="page-subtitle">Gestión de sucursales y sedes</p>
+        </div>
+        <button class="btn-primary" (click)="onCreateNew()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nueva sucursal
+        </button>
+      </header>
+
+      <app-branch-list
+        [branches]="branches()"
+        [isLoading]="isLoading()"
+        [totalElements]="totalElements()"
+        [pageSize]="pageSize()"
+        (view)="onViewBranch($event)"
+        (edit)="onEditBranch($event)"
+        (delete)="onDeleteBranch($event)"
+      />
+
+      <!-- Modal crear/editar -->
+      @if (showForm()) {
+        <app-branch-form
+          [initialBranch]="editingBranch()"
+          [isLoading]="isSaving()"
+          (submitted)="onFormSubmit($event)"
+          (cancelled)="closeForm()"
+        />
+      }
+
+      <!-- Confirm delete -->
+      @if (deletingBranch()) {
+        <div class="modal-backdrop" (click)="deletingBranch.set(null)" role="presentation"></div>
+        <div class="confirm-dialog" role="alertdialog" aria-modal="true">
+          <p class="confirm-text">¿Eliminar <strong>{{ deletingBranch()!.name }}</strong>? Esta acción no se puede deshacer.</p>
+          <div class="confirm-actions">
+            <button class="btn-secondary" (click)="deletingBranch.set(null)" [disabled]="isSaving()">Cancelar</button>
+            <button class="btn-danger" (click)="confirmDelete()" [disabled]="isSaving()">
+              @if (isSaving()) { <span class="spinner"></span> }
+              Eliminar
+            </button>
+          </div>
+        </div>
+      }
+    </div>

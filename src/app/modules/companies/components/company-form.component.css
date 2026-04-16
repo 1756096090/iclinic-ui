@@ -1,0 +1,9 @@
+.entity-form {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: var(--sp-6);
+}
+
+.entity-form__actions {
+  margin-top: var(--sp-6);
+}

@@ -1,0 +1,128 @@
+.list-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.loading-state,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-12);
+  color: var(--c-text-3);
+}
+
+.empty-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  opacity: 0.4;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  flex: 1;
+}
+
+.data-table {
+  width: 100%;
+  min-width: 700px;
+  background: transparent;
+  border-collapse: collapse;
+}
+
+.cell-user {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--c-red-muted);
+  color: var(--c-red);
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.cell-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cell-primary {
+  font-size: 0.875rem;
+  color: var(--c-text);
+  font-weight: 500;
+}
+
+.cell-secondary {
+  font-size: 0.75rem;
+  color: var(--c-text-3);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 var(--sp-2);
+  border-radius: 11px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.badge--active { background: rgba(16, 185, 129, 0.14); color: #34d399; }
+.badge--inactive { background: rgba(239, 68, 68, 0.14); color: #f87171; }
+.badge--role-admin { background: var(--c-red-muted); color: var(--c-red); }
+.badge--role-manager { background: rgba(245, 158, 11, 0.14); color: #fbbf24; }
+.badge--role-agent { background: rgba(59, 130, 246, 0.14); color: #60a5fa; }
+.badge--role-user { background: rgba(107, 114, 128, 0.14); color: #9ca3af; }
+
+.row-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  justify-content: flex-end;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  border-radius: var(--r-sm);
+  color: var(--c-text-3);
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.action-btn:hover {
+  background: var(--c-bg-hover);
+  color: var(--c-text);
+}
+
+.action-btn--danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+}

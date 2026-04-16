@@ -1,0 +1,147 @@
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="entity-form">
+      <div class="form-stack">
+        <div class="form-field">
+          <label class="form-label">Nombre</label>
+          <input class="form-input"
+            formControlName="firstName"
+            placeholder="Juan"
+            required
+          />
+          @if (form.get('firstName')?.hasError('required')) {
+            <p class="form-error">El nombre es requerido</p>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Apellido</label>
+          <input class="form-input"
+            formControlName="lastName"
+            placeholder="Pérez"
+            required
+          />
+          @if (form.get('lastName')?.hasError('required')) {
+            <p class="form-error">El apellido es requerido</p>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Email</label>
+          <input class="form-input"
+            formControlName="email"
+            type="email"
+            placeholder="juan@example.com"
+            required
+          />
+          @if (form.get('email')?.hasError('required')) {
+            <p class="form-error">El email es requerido</p>
+          }
+          @if (form.get('email')?.hasError('email')) {
+            <p class="form-error">El email debe ser válido</p>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Contraseña</label>
+          <input class="form-input"
+            formControlName="password"
+            type="password"
+            [required]="!isEditMode"
+          />
+          @if (form.get('password')?.hasError('required') && !isEditMode) {
+            <p class="form-error">La contraseña es requerida</p>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Teléfono</label>
+          <input class="form-input"
+            formControlName="phone"
+            placeholder="+34 123 456 789"
+            required
+          />
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Rol</label>
+          <select class="form-input" formControlName="role">
+            @for (role of userRoles; track role) {
+              <option [value]="role">
+                {{ USER_ROLE_DISPLAY_NAMES[role] }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Tipo de Usuario</label>
+          <select class="form-input" formControlName="userType">
+            @for (type of userTypes; track type) {
+              <option [value]="type">
+                {{ USER_TYPE_DISPLAY_NAMES[type] }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Tipo de Documento</label>
+          <select class="form-input" formControlName="documentType">
+            @for (docType of documentTypes; track docType) {
+              <option [value]="docType">
+                {{ DOCUMENT_TYPE_DISPLAY_NAMES[docType] }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Número de Documento</label>
+          <input class="form-input"
+            formControlName="documentNumber"
+            placeholder="123456789"
+            required
+          />
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Nacionalidad</label>
+          <input class="form-input"
+            formControlName="nationality"
+            placeholder="Ecuatoriana"
+            required
+          />
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">ID Empresa</label>
+          <input class="form-input"
+            formControlName="companyId"
+            type="number"
+            required
+          />
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">ID Sucursal</label>
+          <input class="form-input"
+            formControlName="branchId"
+            type="number"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-actions entity-form__actions">
+        <button
+          class="btn-primary"
+          type="submit"
+          [disabled]="!form.valid || isLoading()"
+        >
+          @if (isLoading()) {
+            <span class="spinner"></span>
+          } @else {
+            {{ isEditMode ? 'Actualizar' : 'Crear' }} Usuario
+          }
+        </button>
+      </div>
+    </form>

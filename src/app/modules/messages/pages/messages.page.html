@@ -1,0 +1,44 @@
+    <div class="page-shell messages-page">
+      <header class="page-header">
+        <div class="page-heading">
+          <h1 class="page-title">Mensajes</h1>
+          <p class="page-subtitle">Historial global de mensajes CRM</p>
+        </div>
+      </header>
+
+      @if (isLoading()) {
+        <div class="loading-state">
+        </div>
+      } @else if (messages().length === 0) {
+        <div class="state-block empty-state">
+          <span class="material-icons state-icon-lg">mail_outline</span>
+          <p>No hay mensajes registrados</p>
+        </div>
+      } @else {
+        <div class="msg-list" role="list">
+          @for (msg of messages(); track msg.id) {
+            <div class="msg-row" role="listitem">
+              <div class="msg-direction" [class]="'msg-direction--' + msg.direction.toLowerCase()">
+                <span class="material-icons">{{ msg.direction === inbound ? 'call_received' : 'call_made' }}</span>
+              </div>
+              <div class="msg-body">
+                <p class="msg-content">{{ msg.content }}</p>
+                <div class="msg-tags">
+                  <span class="badge badge--dir" [class]="'badge--dir-' + msg.direction.toLowerCase()">
+                    {{ directionLabel(msg.direction) }}
+                  </span>
+                  <span class="badge badge--status" [class]="'badge--status-' + msg.status.toLowerCase()">
+                    {{ statusLabel(msg.status) }}
+                  </span>
+                  <span class="msg-type">{{ msg.messageType }}</span>
+                </div>
+              </div>
+              <div class="msg-extra">
+                <span class="msg-conv">Conv. #{{ msg.conversationId }}</span>
+                <span class="msg-date">{{ msg.createdAt | date: 'dd/MM/yy HH:mm' }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>

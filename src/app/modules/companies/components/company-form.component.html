@@ -1,0 +1,54 @@
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="entity-form">
+      <div class="form-stack">
+        <div class="form-field">
+          <label class="form-label">Nombre</label>
+          <input
+            class="form-input"
+            formControlName="name"
+            placeholder="Nombre de la empresa"
+            required
+          />
+          @if (form.get('name')?.hasError('required')) {
+            <p class="form-error">El nombre es requerido</p>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Tipo de Empresa</label>
+          <select class="form-input" formControlName="companyType">
+            @for (type of companyTypes; track type) {
+              <option [value]="type">
+                {{ COMPANY_TYPE_DISPLAY_NAMES[type] }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">ID Fiscal</label>
+          <input
+            class="form-input"
+            formControlName="taxId"
+            placeholder="RUC, NIT, etc."
+            required
+          />
+          @if (form.get('taxId')?.hasError('required')) {
+            <p class="form-error">El ID fiscal es requerido</p>
+          }
+        </div>
+      </div>
+
+      <div class="form-actions entity-form__actions">
+        <button
+          class="btn-primary"
+          type="submit"
+          [disabled]="!form.valid || isLoading()"
+        >
+          @if (isLoading()) {
+            <span class="spinner"></span>
+          } @else {
+            {{ isEditMode ? 'Actualizar' : 'Crear' }} Empresa
+          }
+        </button>
+      </div>
+    </form>

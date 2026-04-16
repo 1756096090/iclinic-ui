@@ -1,0 +1,230 @@
+.list-wrap {
+  padding: 0 var(--sp-6) var(--sp-6);
+}
+
+.loading-state,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-12);
+  color: var(--c-text-3);
+}
+
+.empty-state mat-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  opacity: 0.4;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--sp-4);
+}
+
+.channel-card {
+  background: var(--c-bg-2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  transition: border-color var(--t);
+}
+
+.channel-card--active {
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.channel-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-sm);
+  background: var(--c-bg-3);
+  color: var(--c-text-2);
+  flex-shrink: 0;
+}
+
+.channel-icon mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.channel-icon--whatsapp { background: rgba(37, 211, 102, 0.12); color: #25d366; }
+.channel-icon--telegram { background: rgba(0, 136, 204, 0.12); color: #0088cc; }
+.channel-icon--sms { background: rgba(245, 158, 11, 0.12); color: #fbbf24; }
+.channel-icon--email { background: rgba(59, 130, 246, 0.12); color: #60a5fa; }
+.channel-icon--facebook { background: rgba(24, 119, 242, 0.12); color: #1877f2; }
+.channel-icon--instagram { background: rgba(225, 48, 108, 0.12); color: #e1306c; }
+.channel-icon--slack { background: rgba(74, 21, 75, 0.12); color: #e01e5a; }
+.channel-icon--webhook { background: rgba(139, 92, 246, 0.12); color: #a78bfa; }
+
+.card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.card-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+.card-provider {
+  font-size: 0.75rem;
+  color: var(--c-text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+  background: var(--c-bg-3);
+  border-radius: var(--r-sm);
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  color: var(--c-text-3);
+  white-space: nowrap;
+}
+
+.detail-value {
+  font-size: 0.75rem;
+  color: var(--c-text-2);
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  background: transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--c-border);
+}
+
+.toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  height: 28px;
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--c-border);
+  background: transparent;
+  border-radius: var(--r-xs);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--c-text-3);
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+
+.toggle-btn mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.toggle-btn:hover {
+  border-color: #34d399;
+  color: #34d399;
+}
+
+.toggle-btn--active {
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.card-actions {
+  display: flex;
+  gap: var(--sp-1);
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: var(--r-sm);
+  color: var(--c-text-3);
+  cursor: pointer;
+  transition: color var(--t-fast), background-color var(--t-fast);
+}
+
+.action-btn mat-icon {
+  font-size: 15px;
+  width: 15px;
+  height: 15px;
+}
+
+.action-btn:hover {
+  background: var(--c-bg-hover);
+  color: var(--c-text);
+}
+
+.action-btn--danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 10px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badge--active { background: rgba(16, 185, 129, 0.14); color: #34d399; }
+.badge--inactive { background: rgba(107, 114, 128, 0.14); color: #9ca3af; }
+.badge--pending { background: rgba(245, 158, 11, 0.14); color: #fbbf24; }
+.badge--disconnected { background: rgba(239, 68, 68, 0.14); color: #f87171; }
+.badge--error { background: rgba(239, 68, 68, 0.2); color: #f87171; }
