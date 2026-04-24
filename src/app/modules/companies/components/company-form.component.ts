@@ -41,6 +41,7 @@ export class CompanyFormComponent implements OnInit {
   readonly initialCompany = input<CompanyUnifiedResponse | null>(null);
   readonly isLoading = input(false);
   readonly submitted = output<CreateCompanyUnifiedRequest>();
+  readonly cancelled = output<void>();
 
   form!: FormGroup;
   isEditMode = false;

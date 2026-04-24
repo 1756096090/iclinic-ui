@@ -17,8 +17,8 @@
                   <mat-icon aria-hidden="true">{{ channelIcon(ch.channelType) }}</mat-icon>
                 </div>
                 <div class="card-info">
-                  <span class="card-title">{{ channelLabel(ch.channelType) }}</span>
-                  <span class="card-provider">{{ ch.provider }}</span>
+                  <span class="card-title" [attr.title]="channelLabel(ch.channelType)">{{ channelLabel(ch.channelType) }}</span>
+                  <span class="card-provider" [attr.title]="ch.provider">{{ ch.provider }}</span>
                 </div>
                 <span class="badge" [class]="'badge--' + ch.status.toLowerCase()">
                   {{ statusLabel(ch.status) }}
@@ -28,17 +28,17 @@
               <div class="card-body">
                 <div class="detail-row">
                   <span class="detail-label">Cuenta externa</span>
-                  <code class="detail-value">{{ ch.externalAccountId }}</code>
+                  <code class="detail-value" [attr.title]="ch.externalAccountId">{{ ch.externalAccountId }}</code>
                 </div>
                 @if (ch.externalPhoneNumberId) {
                   <div class="detail-row">
                     <span class="detail-label">Número</span>
-                    <code class="detail-value">{{ ch.externalPhoneNumberId }}</code>
+                    <code class="detail-value" [attr.title]="ch.externalPhoneNumberId">{{ ch.externalPhoneNumberId }}</code>
                   </div>
                 }
                 <div class="detail-row">
                   <span class="detail-label">Sucursal ID</span>
-                  <span class="detail-value">{{ ch.branchId }}</span>
+                  <span class="detail-value" [attr.title]="ch.branchId">{{ ch.branchId }}</span>
                 </div>
               </div>
 

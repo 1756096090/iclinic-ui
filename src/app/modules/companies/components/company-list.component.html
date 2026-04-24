@@ -16,13 +16,13 @@
           @for (row of companies(); track row.id) {
             <article class="company-card" role="listitem">
               <div class="company-card__head">
-                <span class="cell-primary">{{ row.name }}</span>
+                <span class="cell-primary u-truncate" [attr.title]="row.name">{{ row.name }}</span>
                 <span class="badge">{{ getCompanyTypeLabel(row.companyType) }}</span>
               </div>
 
               <div class="company-card__meta">
                 <span class="company-card__label">{{ taxIdLabel() }}</span>
-                <code class="cell-code">{{ row.taxId }}</code>
+                <code class="cell-code" [attr.title]="row.taxId">{{ row.taxId }}</code>
               </div>
 
               <div class="actions-cell actions-cell--card">
@@ -57,7 +57,7 @@
               @for (row of companies(); track row.id) {
                 <tr>
                   <td>
-                    <span class="cell-primary">{{ row.name }}</span>
+                    <span class="cell-primary u-truncate" [attr.title]="row.name">{{ row.name }}</span>
                   </td>
                   <td>
                     <span class="badge">
@@ -65,7 +65,7 @@
                     </span>
                   </td>
                   <td>
-                    <code class="cell-code">{{ row.taxId }}</code>
+                    <code class="cell-code" [attr.title]="row.taxId">{{ row.taxId }}</code>
                   </td>
                   <td class="actions-cell">
                     <button class="action-btn" title="Ver detalles" (click)="onViewClicked(row)" aria-label="Ver detalles">

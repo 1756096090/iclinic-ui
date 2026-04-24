@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-width: 0;
 }
 
 .branch-cards {
@@ -32,20 +33,55 @@
 }
 
 .table-scroll {
-  overflow-x: auto;
+  overflow: auto;
   flex: 1;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  background: var(--c-bg-2);
+  box-shadow: var(--shadow-sm);
 }
 
 .data-table {
   width: 100%;
-  min-width: 640px;
+  min-width: 720px;
   background: transparent;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.data-table th,
+.data-table td {
+  padding: var(--sp-3) var(--sp-4);
+  text-align: left;
+}
+
+.data-table th {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--c-text-3);
+  background: color-mix(in srgb, var(--c-bg-3) 70%, transparent);
+}
+
+.data-table td {
+  vertical-align: middle;
+  border-top: 1px solid var(--c-border);
+}
+
+.data-table th:last-child,
+.data-table td:last-child {
+  width: 132px;
 }
 
 .cell-name {
   display: flex;
   align-items: center;
   gap: var(--sp-3);
+}
+
+.cell-name > div:last-child {
+  min-width: 0;
 }
 
 .branch-icon {
@@ -63,19 +99,23 @@
 
 .cell-primary {
   display: block;
+  min-width: 0;
   font-size: 0.875rem;
   color: var(--c-text);
   font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .cell-secondary {
   display: block;
+  min-width: 0;
   font-size: 0.75rem;
   color: var(--c-text-3);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 200px;
 }
 
 .badge {
@@ -89,6 +129,9 @@
   text-transform: uppercase;
   letter-spacing: 0.3px;
   white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .badge--active { background: rgba(16, 185, 129, 0.14); color: #34d399; }

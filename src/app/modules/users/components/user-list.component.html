@@ -17,8 +17,8 @@
                     {{ row.fullName.charAt(0).toUpperCase() || '?' }}
                   </div>
                   <div class="cell-user-info">
-                    <span class="cell-primary">{{ row.fullName }}</span>
-                    <span class="cell-secondary">{{ row.email }}</span>
+                    <span class="cell-primary u-truncate" [attr.title]="row.fullName">{{ row.fullName }}</span>
+                    <span class="cell-secondary u-truncate" [attr.title]="row.email">{{ row.email }}</span>
                   </div>
                 </div>
                 <span class="badge" [class]="'badge badge--role-' + row.role.toLowerCase()">
@@ -29,11 +29,11 @@
               <div class="user-card__meta">
                 <div class="user-card__meta-item">
                   <span class="user-card__label">Empresa</span>
-                  <span class="cell-primary">{{ row.companyName }}</span>
+                  <span class="cell-primary u-truncate" [attr.title]="row.companyName">{{ row.companyName }}</span>
                 </div>
                 <div class="user-card__meta-item">
                   <span class="user-card__label">Sucursal</span>
-                  <span class="cell-secondary">{{ row.branchName }}</span>
+                  <span class="cell-secondary u-truncate" [attr.title]="row.branchName">{{ row.branchName }}</span>
                 </div>
                 <div class="user-card__meta-item">
                   <span class="user-card__label">Estado</span>
@@ -97,8 +97,8 @@
                         {{ row.fullName.charAt(0).toUpperCase() || '?' }}
                       </div>
                       <div class="cell-user-info">
-                        <span class="cell-primary">{{ row.fullName }}</span>
-                        <span class="cell-secondary">{{ row.email }}</span>
+                        <span class="cell-primary u-truncate" [attr.title]="row.fullName">{{ row.fullName }}</span>
+                        <span class="cell-secondary u-truncate" [attr.title]="row.email">{{ row.email }}</span>
                       </div>
                     </div>
                   </td>
@@ -108,10 +108,10 @@
                     </span>
                   </td>
                   <td>
-                    <span class="cell-primary">{{ row.companyName }}</span>
+                    <span class="cell-primary u-truncate" [attr.title]="row.companyName">{{ row.companyName }}</span>
                   </td>
                   <td>
-                    <span class="cell-secondary">{{ row.branchName }}</span>
+                    <span class="cell-secondary u-truncate" [attr.title]="row.branchName">{{ row.branchName }}</span>
                   </td>
                   <td>
                     <span class="badge" [class]="row.active ? 'badge--active' : 'badge--inactive'">

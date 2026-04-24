@@ -23,3 +23,12 @@
         />
       </div>
     </div>
+
+    @if (isFormOpen()) {
+      <app-company-form
+        [initialCompany]="editingCompany()"
+        [isLoading]="isSaving()"
+        (submitted)="onSaveForm($event)"
+        (cancelled)="closeForm()"
+      />
+    }

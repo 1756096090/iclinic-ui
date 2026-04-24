@@ -87,6 +87,9 @@
   --r-md: 12px;
   --r-lg: 16px;
 
+  /* Layout */
+  --page-gutter: clamp(16px, 2vw, 24px);
+
   /* Transitions */
   --t-fast: 0.15s ease;
   --t:      0.2s ease;
@@ -394,7 +397,7 @@
 }
 
 .page-shell--padded {
-  padding: var(--sp-6);
+  padding: var(--page-gutter);
 }
 
 /* Page header */
@@ -402,7 +405,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--sp-5) var(--sp-6);
+  padding: var(--sp-5) var(--page-gutter);
   background-color: var(--c-bg-2);
   border-bottom: 1px solid var(--c-border);
   flex-shrink: 0;
@@ -442,8 +445,33 @@
 .page-content {
   flex: 1;
   overflow-y: auto;
-  padding: var(--sp-6);
+  padding: var(--page-gutter);
   background-color: var(--c-bg);
+}
+
+:where(app-user-list, app-branch-list, app-company-list, app-channel-list) {
+  display: block;
+  min-width: 0;
+  padding: 0 var(--page-gutter) var(--page-gutter);
+}
+
+.u-truncate {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.u-truncate-inline {
+  display: inline-block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 .btn-primary,
@@ -611,6 +639,21 @@
   flex: 1;
   overflow-y: auto;
   padding: 24px;
+}
+
+@media (max-width: 767px) {
+  .page-header {
+    padding: var(--sp-4);
+  }
+
+  :where(app-user-list, app-branch-list, app-company-list, app-channel-list) {
+    padding: 0 var(--sp-4) var(--sp-4);
+  }
+
+  .page-content,
+  .page-shell--padded {
+    padding: var(--sp-4);
+  }
 }
 
 .dialog-footer {

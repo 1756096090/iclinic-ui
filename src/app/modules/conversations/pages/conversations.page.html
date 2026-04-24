@@ -38,7 +38,7 @@
                 </div>
                 <div class="conv-meta">
                   <div class="conv-row-top">
-                    <span class="conv-name">#{{ conv.id }} — Contacto {{ conv.contactId }}</span>
+                    <span class="conv-name" [attr.title]="'#' + conv.id + ' — Contacto ' + conv.contactId">#{{ conv.id }} — Contacto {{ conv.contactId }}</span>
                     <div class="conv-top-right">
                       @if (unreadCountForConversation(conv.id) > 0) {
                         <span class="conv-unread-count">{{ unreadCountForConversation(conv.id) }}</span>
@@ -50,7 +50,7 @@
                     <span class="badge badge--sm" [class]="'badge--' + conv.status.toLowerCase()">
                       {{ statusLabel(conv.status) }}
                     </span>
-                    <span class="conv-channel">Canal {{ conv.channelConnectionId }}</span>
+                    <span class="conv-channel" [attr.title]="'Canal ' + conv.channelConnectionId">Canal {{ conv.channelConnectionId }}</span>
                   </div>
                 </div>
               </li>
@@ -86,7 +86,10 @@
               <span class="msg-header-title">
                 Conversación #{{ selectedConversation()!.id }}
               </span>
-              <span class="msg-header-sub">
+              <span
+                class="msg-header-sub"
+                [attr.title]="'Contacto ' + selectedConversation()!.contactId + ' · Canal ' + selectedConversation()!.channelConnectionId"
+              >
                 Contacto {{ selectedConversation()!.contactId }} · Canal {{ selectedConversation()!.channelConnectionId }}
               </span>
             </div>

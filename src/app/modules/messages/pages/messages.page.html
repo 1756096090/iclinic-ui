@@ -26,7 +26,7 @@
                 <span class="material-icons">{{ msg.direction === inbound ? 'call_received' : 'call_made' }}</span>
               </div>
               <div class="msg-body">
-                <p class="msg-content">{{ msg.content }}</p>
+                <p class="msg-content" [attr.title]="msg.content">{{ msg.content }}</p>
                 <div class="msg-tags">
                   <span class="badge badge--dir" [class]="'badge--dir-' + msg.direction.toLowerCase()">
                     {{ directionLabel(msg.direction) }}
@@ -37,12 +37,12 @@
                   @if (msg.direction === inbound && msg.status !== 'READ') {
                     <span class="badge badge--unread">No visto</span>
                   }
-                  <span class="msg-type">{{ msg.messageType }}</span>
+                  <span class="msg-type" [attr.title]="msg.messageType">{{ msg.messageType }}</span>
                 </div>
               </div>
               <div class="msg-extra">
-                <span class="msg-conv">Conv. #{{ msg.conversationId }}</span>
-                <span class="msg-date">{{ msg.createdAt | date: 'dd/MM/yy HH:mm' }}</span>
+                <span class="msg-conv" [attr.title]="'Conversación #' + msg.conversationId">Conv. #{{ msg.conversationId }}</span>
+                <span class="msg-date" [attr.title]="(msg.createdAt | date: 'dd/MM/yy HH:mm') ?? ''">{{ msg.createdAt | date: 'dd/MM/yy HH:mm' }}</span>
               </div>
             </div>
           }

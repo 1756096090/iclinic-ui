@@ -1,54 +1,85 @@
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="entity-form">
-      <div class="form-stack">
-        <div class="form-field">
-          <label class="form-label">Nombre</label>
-          <input
-            class="form-input"
-            formControlName="name"
-            placeholder="Nombre de la empresa"
-            required
-          />
-          @if (form.get('name')?.hasError('required')) {
-            <p class="form-error">El nombre es requerido</p>
-          }
-        </div>
+    <!-- Backdrop -->
+    <div
+      class="modal-backdrop"
+      (click)="cancelled.emit()"
+      role="presentation"
+    ></div>
 
-        <div class="form-field">
-          <label class="form-label">Tipo de Empresa</label>
-          <select class="form-input" formControlName="companyType">
-            @for (type of companyTypes; track type) {
-              <option [value]="type">
-                {{ COMPANY_TYPE_DISPLAY_NAMES[type] }}
-              </option>
-            }
-          </select>
-        </div>
+    <!-- Modal panel -->
+    <div class="dialog-panel company-form-dialog" role="dialog" aria-modal="true" [attr.aria-labelledby]="'modal-title'">
 
-        <div class="form-field">
-          <label class="form-label">ID Fiscal</label>
-          <input
-            class="form-input"
-            formControlName="taxId"
-            placeholder="RUC, NIT, etc."
-            required
-          />
-          @if (form.get('taxId')?.hasError('required')) {
-            <p class="form-error">El ID fiscal es requerido</p>
-          }
-        </div>
-      </div>
-
-      <div class="form-actions entity-form__actions">
-        <button
-          class="btn-primary"
-          type="submit"
-          [disabled]="!form.valid || isLoading()"
-        >
-          @if (isLoading()) {
-            <span class="spinner"></span>
-          } @else {
-            {{ isEditMode ? 'Actualizar' : 'Crear' }} Empresa
-          }
+      <!-- Header -->
+      <div class="dialog-header">
+        <h2 id="modal-title" class="dialog-title">
+          {{ isEditMode ? 'Editar empresa' : 'Nueva empresa' }}
+        </h2>
+        <button class="btn-icon dialog-close" type="button" (click)="cancelled.emit()" aria-label="Cerrar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-    </form>
+
+      <!-- Body -->
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="dialog-body">
+        <div class="form-stack">
+          <div class="form-field">
+            <label class="form-label">Nombre</label>
+            <input
+              class="form-input"
+              formControlName="name"
+              placeholder="Nombre de la empresa"
+              required
+            />
+            @if (form.get('name')?.hasError('required')) {
+              <p class="form-error">El nombre es requerido</p>
+            }
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Tipo de Empresa</label>
+            <select class="form-input" formControlName="companyType">
+              @for (type of companyTypes; track type) {
+                <option [value]="type">
+                  {{ COMPANY_TYPE_DISPLAY_NAMES[type] }}
+                </option>
+              }
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">ID Fiscal</label>
+            <input
+              class="form-input"
+              formControlName="taxId"
+              placeholder="RUC, NIT, etc."
+              required
+            />
+            @if (form.get('taxId')?.hasError('required')) {
+              <p class="form-error">El ID fiscal es requerido</p>
+            }
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="dialog-footer">
+          <button
+            class="btn-secondary"
+            type="button"
+            (click)="cancelled.emit()"
+            [disabled]="isLoading()"
+          >
+            Cancelar
+          </button>
+          <button
+            class="btn-primary"
+            type="submit"
+            [disabled]="!form.valid || isLoading()"
+          >
+            @if (isLoading()) {
+              <span class="spinner"></span>
+            } @else {
+              {{ isEditMode ? 'Actualizar' : 'Crear' }} Empresa
+            }
+          </button>
+        </div>
+      </form>
+    </div>
