@@ -1,0 +1,70 @@
+@if (isLoading()) {
+  <div class="appt-list__skeleton">
+    @for (_ of [1,2,3,4]; track $index) {
+      <div class="skeleton-row"></div>
+    }
+  </div>
+} @else if (appointments().length === 0) {
+  <div class="appt-list__empty">
+    <app-icon [name]="'calendar'" class="appt-list__empty-icon"></app-icon>
+    <p>No hay citas programadas</p>
+  </div>
+} @else {
+  <ul class="appt-list" role="list">
+    @for (appt of appointments(); track appt.id) {
+      <li class="appt-card">
+        <div class="appt-card__time">
+          <span class="appt-card__date">{{ appt.scheduledStart | date:'dd MMM' }}</span>
+          <span class="appt-card__hour">{{ appt.scheduledStart | date:'HH:mm' }}</span>
+        </div>
+
+        <div class="appt-card__body">
+          <p class="appt-card__contact">{{ appt.contactName ?? ('Contacto #' + appt.contactId) }}</p>
+          <p class="appt-card__branch">{{ appt.branchName ?? ('Sucursal #' + appt.branchId) }}</p>
+          @if (appt.notes) {
+            <p class="appt-card__notes">{{ appt.notes }}</p>
+          }
+        </div>
+
+        <div class="appt-card__aside">
+          <span class="badge" [class]="statusClass(appt.status)">
+            {{ STATUS_DISPLAY[appt.status] }}
+          </span>
+          <div class="appt-card__actions">
+            <button
+              class="btn-icon"
+              type="button"
+              title="Ver detalle"
+              (click)="view.emit(appt)"
+              aria-label="Ver detalle"
+            >
+              <app-icon name="eye"></app-icon>
+            </button>
+            @if (canReschedule(appt.status)) {
+              <button
+                class="btn-icon"
+                type="button"
+                title="Reagendar"
+                (click)="reschedule.emit(appt)"
+                aria-label="Reagendar"
+              >
+                <app-icon [name]="'calendar'"></app-icon>
+              </button>
+            }
+            @if (canCancel(appt.status)) {
+              <button
+                class="btn-icon btn-icon--danger"
+                type="button"
+                title="Cancelar cita"
+                (click)="cancel.emit(appt)"
+                aria-label="Cancelar cita"
+              >
+                <app-icon name="x"></app-icon>
+              </button>
+            }
+          </div>
+        </div>
+      </li>
+    }
+  </ul>
+}

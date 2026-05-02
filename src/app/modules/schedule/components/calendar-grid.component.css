@@ -1,0 +1,123 @@
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background: var(--c-border);
+  border: 1px solid var(--c-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Weekday header row */
+.cal-weekday {
+  background: var(--c-bg-2);
+  text-align: center;
+  padding: 10px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--c-text-2);
+}
+
+/* Day cells */
+.cal-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-height: 80px;
+  padding: 8px 4px 6px;
+  background: var(--c-bg-2);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.cal-cell:not(:disabled):hover {
+  background: var(--c-bg-3, color-mix(in srgb, var(--c-bg-2) 80%, var(--c-text)));
+}
+
+.cal-cell:disabled {
+  cursor: default;
+}
+
+/* Day number */
+.cal-cell__num {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--c-text);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Modifiers */
+.cal-cell--other {
+  background: color-mix(in srgb, var(--c-bg-2) 60%, var(--c-bg, #000));
+}
+
+.cal-cell--other .cal-cell__num {
+  color: var(--c-text-2);
+  opacity: 0.35;
+}
+
+.cal-cell--today .cal-cell__num {
+  background: var(--c-red);
+  color: #fff;
+  font-weight: 700;
+}
+
+.cal-cell--selected:not(.cal-cell--today) .cal-cell__num {
+  background: color-mix(in srgb, var(--c-red) 20%, transparent);
+  color: var(--c-red);
+  font-weight: 700;
+}
+
+/* Appointment dots */
+.cal-cell__dots {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cal-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cal-dot--pending   { background: #ca8a04; }
+.cal-dot--confirmed { background: #3b82f6; }
+.cal-dot--completed { background: #16a34a; }
+.cal-dot--cancelled { background: #dc2626; }
+.cal-dot--no_show   { background: #6b7280; }
+
+.cal-dot-more {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--c-text-2);
+  line-height: 1;
+}
+
+/* Mobile: reduce cell height */
+@media (max-width: 600px) {
+  .cal-cell {
+    min-height: 52px;
+    padding: 6px 2px 4px;
+  }
+
+  .cal-cell__num {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+}

@@ -37,6 +37,11 @@ export const routes: Routes = [
       import('./modules/channel-connections/pages/channel-connections.page').then((m) => m.ChannelConnectionsPageComponent),
   },
   {
+    path: 'schedule',
+    loadComponent: () =>
+      import('./modules/schedule/pages/schedule.page').then((m) => m.SchedulePageComponent),
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',

@@ -84,6 +84,19 @@ export const API_ENDPOINTS = {
     DELETE: (id: number) => `crm/messages/${id}`,
   },
 
+  // Appointments / Schedule
+  APPOINTMENTS: {
+    BASE: 'appointments',
+    CREATE: 'appointments',
+    GET_BY_ID: (id: number) => `appointments/${id}`,
+    GET_BY_BRANCH: (branchId: number) => `appointments/branch/${branchId}`,
+    GET_BY_CONTACT: (contactId: number) => `appointments/contact/${contactId}`,
+    RESCHEDULE: (id: number) => `appointments/${id}/reschedule`,
+    CANCEL: (id: number) => `appointments/${id}/cancel`,
+    AVAILABLE_SLOTS: (branchId: number, date: string) =>
+      `appointments/available-slots?branchId=${branchId}&date=${date}`,
+  },
+
   // Channel Connections
   CHANNEL_CONNECTIONS: {
     BASE: 'crm/channels',

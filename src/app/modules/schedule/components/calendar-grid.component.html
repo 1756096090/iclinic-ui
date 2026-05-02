@@ -1,0 +1,42 @@
+<!-- Weekday headers -->
+<div class="cal-grid">
+  @for (wd of WEEKDAYS; track wd) {
+    <div class="cal-weekday">{{ wd }}</div>
+  }
+
+  <!-- Day cells -->
+  @for (week of weeks(); track $index) {
+    @for (day of week; track day.date.toISOString()) {
+      <button
+        type="button"
+        class="cal-cell"
+        [class.cal-cell--other]="!day.isCurrentMonth"
+        [class.cal-cell--today]="day.isToday"
+        [class.cal-cell--selected]="isSelected(day)"
+        [class.cal-cell--has-appts]="day.appointments.length > 0"
+        (click)="selectDay(day)"
+        (dblclick)="requestCreate(day)"
+        [attr.aria-label]="day.date | date:'d MMMM yyyy'"
+        [attr.aria-pressed]="isSelected(day)"
+        [disabled]="!day.isCurrentMonth"
+      >
+        <span class="cal-cell__num">{{ day.date.getDate() }}</span>
+
+        @if (day.appointments.length > 0 && day.isCurrentMonth) {
+          <div class="cal-cell__dots">
+            @for (appt of day.appointments.slice(0, 3); track appt.id) {
+              <span
+                class="cal-dot"
+                [class]="'cal-dot--' + appt.status.toLowerCase()"
+                [title]="appt.contactName ?? 'Cita'"
+              ></span>
+            }
+            @if (day.appointments.length > 3) {
+              <span class="cal-dot-more">+{{ day.appointments.length - 3 }}</span>
+            }
+          </div>
+        }
+      </button>
+    }
+  }
+</div>

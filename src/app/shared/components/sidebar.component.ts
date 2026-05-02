@@ -66,6 +66,7 @@ export class SidebarComponent {
     { route: '/users', icon: 'people', label: 'Usuarios' },
     { route: '/companies', icon: 'business', label: 'Empresas' },
     { route: '/branches', icon: 'location_city', label: 'Sucursales' },
+    { route: '/schedule', icon: 'calendar_month', label: 'Agenda' },
   ];
 
   readonly crmItems: NavItem[] = [

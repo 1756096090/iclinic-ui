@@ -7,5 +7,5 @@ export type IconKey =
   | 'location' | 'store'
   | 'messageSquare' | 'chatBubble' | 'send'
   | 'edit' | 'trash' | 'eye' | 'plus'
-  | 'connectivity' | 'arrowRight' | 'hub' | 'x'
+  | 'connectivity' | 'arrowRight' | 'hub' | 'x' | 'calendar'
   | 'messageCircle' | 'smartphone' | 'mail' | 'camera' | 'hash' | 'plug' | 'checkCircle';
