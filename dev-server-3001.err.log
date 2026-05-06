@@ -1,0 +1,28 @@
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'branches' does not exist on type 'never[] | { branches: never[] | BranchUnifiedResponse[]; contactIds: number[]; }'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/modules/schedule/components/appointment-form.component.ts:173:19:
+[37m      173 │     ).subscribe(({ [32mbranches[37m, contactIds }) => {
+          ╵                    [32m~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'contactIds' does not exist on type 'never[] | { branches: never[] | BranchUnifiedResponse[]; contactIds: number[]; }'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/modules/schedule/components/appointment-form.component.ts:173:29:
+[37m      173 │     ).subscribe(({ branches, [32mcontactIds[37m }) => {
+          ╵                              [32m~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'branches' does not exist on type 'never[] | { branches: never[] | BranchUnifiedResponse[]; contactIds: number[]; }'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/modules/schedule/components/appointment-form.component.ts:173:19:
+[37m      173 │     ).subscribe(({ [32mbranches[37m, contactIds }) => {
+          ╵                    [32m~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'contactIds' does not exist on type 'never[] | { branches: never[] | BranchUnifiedResponse[]; contactIds: number[]; }'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/modules/schedule/components/appointment-form.component.ts:173:29:
+[37m      173 │     ).subscribe(({ branches, [32mcontactIds[37m }) => {
+          ╵                              [32m~~~~~~~~~~[0m
+
+[39m[22m

@@ -25,7 +25,7 @@ export class ConfigService {
     if (DEFAULT_APP_CONFIG.enableLogging) {
       effect(() => {
         console.info('[CONFIG] Application configuration loaded:', this.configSignal());
-      }, { allowSignalWrites: true });
+      });
     }
   }
 

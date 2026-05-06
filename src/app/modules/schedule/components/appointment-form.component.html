@@ -22,37 +22,84 @@
 
         <!-- ── CREATE mode ── -->
         @case ('create') {
-          <!-- Company ID -->
+          <!-- Company -->
+          @if (companies().length !== 1) {
           <div class="form-field">
-            <label class="form-label" for="f-company-id">ID Empresa <span class="form-required">*</span></label>
-            <input id="f-company-id" type="number" class="form-input" formControlName="companyId" placeholder="1" />
+            <label class="form-label" for="f-company-id">Empresa <span class="form-required">*</span></label>
+            <select id="f-company-id" class="form-input" formControlName="companyId">
+              <option [ngValue]="null" disabled>
+                @if (loadingCompanies()) {
+                  Cargando empresas...
+                } @else {
+                  Selecciona empresa...
+                }
+              </option>
+              @for (c of companies(); track c.id) {
+                <option [ngValue]="c.id">{{ c.name }}</option>
+              }
+            </select>
             @if (form.get('companyId')?.invalid && form.get('companyId')?.touched) {
               <p class="form-error">Campo requerido</p>
             }
           </div>
+          }
 
           <!-- Branch -->
+          @if (form.get('companyId')?.value) {
           <div class="form-field">
             <label class="form-label" for="f-branch">Sucursal <span class="form-required">*</span></label>
             <select id="f-branch" class="form-input" formControlName="branchId" (change)="onBranchDateChange()">
-              <option [ngValue]="null" disabled>Selecciona sucursal...</option>
+              <option [ngValue]="null" disabled>
+                @if (!form.get('companyId')?.value) {
+                  Selecciona empresa primero...
+                } @else if (loadingBranches()) {
+                  Cargando sucursales...
+                } @else {
+                  Selecciona sucursal...
+                }
+              </option>
               @for (b of branches(); track b.id) {
                 <option [ngValue]="b.id">{{ b.name }}</option>
               }
             </select>
+            @if (branchLoadError()) {
+              <p class="form-error">{{ branchLoadError() }}</p>
+            } @else if (form.get('companyId')?.value && !loadingBranches() && branches().length === 0) {
+              <p class="form-hint">No hay sucursales disponibles para esta empresa</p>
+            }
             @if (form.get('branchId')?.invalid && form.get('branchId')?.touched) {
               <p class="form-error">La sucursal es requerida</p>
             }
           </div>
+          }
 
-          <!-- Contact ID -->
+          <!-- Contact -->
+          @if (form.get('companyId')?.value) {
           <div class="form-field">
-            <label class="form-label" for="f-contact">ID Contacto <span class="form-required">*</span></label>
-            <input id="f-contact" type="number" class="form-input" formControlName="contactId" placeholder="1" />
+            <label class="form-label" for="f-contact">Contacto <span class="form-required">*</span></label>
+            <input
+              id="f-contact"
+              type="number"
+              class="form-input"
+              formControlName="contactId"
+              list="contact-list"
+              placeholder="Escribe o selecciona un contacto"
+            />
+            <datalist id="contact-list">
+              @for (cId of contacts(); track cId) {
+                <option [value]="cId">Contacto #{{ cId }}</option>
+              }
+            </datalist>
+            @if (loadingContacts()) {
+              <p class="form-hint">Cargando contactos...</p>
+            } @else if (contacts().length === 0) {
+              <p class="form-hint">No hay contactos disponibles para esta empresa</p>
+            }
             @if (form.get('contactId')?.invalid && form.get('contactId')?.touched) {
               <p class="form-error">Campo requerido</p>
             }
           </div>
+          }
 
           <!-- Date/time -->
           <div class="form-row">
@@ -149,7 +196,7 @@
       <button
         type="submit"
         [class]="mode() === 'cancel' ? 'btn-danger' : 'btn-primary'"
-        [disabled]="isLoading()"
+        [disabled]="isLoading() || (mode() === 'create' && !form.get('branchId')?.value)"
       >
         @if (isLoading()) { <span class="spinner"></span> }
         @switch (mode()) {

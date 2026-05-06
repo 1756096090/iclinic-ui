@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
-  AppointmentListComponent,
   AppointmentFormComponent,
   AppointmentFormMode,
   CalendarGridComponent,
@@ -30,7 +29,7 @@ const MONTH_NAMES = [
 @Component({
   selector: 'app-schedule-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, AppointmentListComponent, AppointmentFormComponent, CalendarGridComponent],
+  imports: [CommonModule, AppointmentFormComponent, CalendarGridComponent],
   styleUrl: './schedule.page.css',
   templateUrl: './schedule.page.html',
 })
