@@ -30,7 +30,7 @@ const MONTH_NAMES = [
 @Component({
   selector: 'app-schedule-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, AppointmentListComponent, AppointmentFormComponent, CalendarGridComponent],
+  imports: [CommonModule, AppointmentFormComponent, CalendarGridComponent],
   styleUrl: './schedule.page.css',
   templateUrl: './schedule.page.html',
 })

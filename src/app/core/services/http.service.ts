@@ -124,6 +124,7 @@ export class HttpService {
   private buildHttpOptions(options?: RequestOptions): {
     headers?: HttpHeaders;
     params?: HttpParams;
+    body?: unknown;
     withCredentials?: boolean;
   } {
     let httpHeaders = new HttpHeaders();
@@ -145,6 +146,7 @@ export class HttpService {
     return {
       headers: httpHeaders,
       ...(Object.keys(httpParams.keys()).length > 0 && { params: httpParams }),
+      ...(options?.body !== undefined && { body: options.body }),
       withCredentials: options?.withCredentials ?? false,
     };
   }

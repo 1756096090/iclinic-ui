@@ -49,6 +49,7 @@ export interface RequestOptions {
   params?: Record<string, string | number | boolean>;
   headers?: Record<string, string>;
   withCredentials?: boolean;
+  body?: unknown;
 }
 
 /**

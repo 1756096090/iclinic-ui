@@ -22,21 +22,26 @@
 
         <!-- ── CREATE mode ── -->
         @case ('create') {
-          <!-- Company ID -->
+          <!-- Company -->
           <div class="form-field">
-            <label class="form-label" for="f-company-id">ID Empresa <span class="form-required">*</span></label>
-            <input id="f-company-id" type="number" class="form-input" formControlName="companyId" placeholder="1" />
+            <label class="form-label" for="f-company-id">Empresa <span class="form-required">*</span></label>
+            <select id="f-company-id" class="form-input" formControlName="companyId" (change)="onCompanyChange()">
+              <option [ngValue]="null" disabled>Selecciona empresa...</option>
+              @for (c of companies(); track c.id) {
+                <option [ngValue]="c.id">{{ c.name }}</option>
+              }
+            </select>
             @if (form.get('companyId')?.invalid && form.get('companyId')?.touched) {
-              <p class="form-error">Campo requerido</p>
+              <p class="form-error">La empresa es requerida</p>
             }
           </div>
 
           <!-- Branch -->
           <div class="form-field">
             <label class="form-label" for="f-branch">Sucursal <span class="form-required">*</span></label>
-            <select id="f-branch" class="form-input" formControlName="branchId" (change)="onBranchDateChange()">
+            <select id="f-branch" class="form-input" formControlName="branchId" (change)="onBranchChange()">
               <option [ngValue]="null" disabled>Selecciona sucursal...</option>
-              @for (b of branches(); track b.id) {
+              @for (b of filteredBranches(); track b.id) {
                 <option [ngValue]="b.id">{{ b.name }}</option>
               }
             </select>
@@ -45,12 +50,73 @@
             }
           </div>
 
-          <!-- Contact ID -->
+          <!-- Doctor -->
           <div class="form-field">
-            <label class="form-label" for="f-contact">ID Contacto <span class="form-required">*</span></label>
-            <input id="f-contact" type="number" class="form-input" formControlName="contactId" placeholder="1" />
+            <label class="form-label" for="f-doctor">Doctor <span class="form-required">*</span></label>
+            <select 
+              id="f-doctor" 
+              class="form-input" 
+              formControlName="doctorId" 
+              (change)="onBranchDateChange()"
+              [disabled]="loadingDoctors() || doctors().length === 0"
+            >
+              <option [ngValue]="null" disabled selected>
+                @if (loadingDoctors()) {
+                  Cargando doctores...
+                } @else if (doctors().length === 0) {
+                  No hay doctores disponibles
+                } @else {
+                  Selecciona doctor...
+                }
+              </option>
+              @for (d of doctors(); track d.id) {
+                <option [ngValue]="d.id">{{ d.fullName }}</option>
+              }
+            </select>
+            @if (form.get('doctorId')?.invalid && form.get('doctorId')?.touched) {
+              <p class="form-error">El doctor es requerido</p>
+            }
+          </div>
+
+          <!-- Contact -->
+          <div class="form-field">
+            <label class="form-label" for="f-contact-search">Contacto <span class="form-required">*</span></label>
+            <div class="contact-search-wrapper">
+              <input 
+                id="f-contact-search" 
+                type="text" 
+                class="form-input" 
+                placeholder="Buscar por nombre o email..." 
+                [value]="contactSearchQuery()"
+                (input)="onContactSearch($any($event.target).value)"
+                [disabled]="!currentBranchId()"
+                autocomplete="off"
+              />
+              @if (loadingContacts()) {
+                <div class="contact-dropdown loading">
+                  <p class="contact-dropdown-item">Buscando contactos...</p>
+                </div>
+              } @else if (contactSearchQuery().trim() && filteredContacts().length > 0) {
+                <div class="contact-dropdown">
+                  @for (contact of filteredContacts(); track contact.id) {
+                    <button
+                      type="button"
+                      class="contact-dropdown-item"
+                      (click)="selectContact(contact)"
+                    >
+                      <div class="contact-name">{{ contact.fullName }}</div>
+                      <div class="contact-email">{{ contact.email }}</div>
+                    </button>
+                  }
+                </div>
+              }
+            </div>
+            <input type="hidden" formControlName="contactId" />
+            @if (form.get('contactId')?.value) {
+              <p class="form-hint">Contacto seleccionado: {{ getSelectedContactName() }}</p>
+            }
             @if (form.get('contactId')?.invalid && form.get('contactId')?.touched) {
-              <p class="form-error">Campo requerido</p>
+              <p class="form-error">El contacto es requerido</p>
             }
           </div>
 
@@ -58,7 +124,7 @@
           <div class="form-row">
             <div class="form-field">
               <label class="form-label" for="f-start">Inicio <span class="form-required">*</span></label>
-              <input id="f-start" type="datetime-local" class="form-input" formControlName="scheduledStart" (change)="onBranchDateChange()" />
+              <input id="f-start" type="datetime-local" class="form-input" formControlName="scheduledStart" (blur)="onBranchDateChange()" />
               @if (form.get('scheduledStart')?.invalid && form.get('scheduledStart')?.touched) {
                 <p class="form-error">Requerido</p>
               }
@@ -121,7 +187,7 @@
           </div>
         }
 
-        <!-- ── CANCEL mode ── -->
+          <!-- CANCEL mode -->
         @case ('cancel') {
           <div class="appt-cancel-warning" role="alert">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -133,7 +199,7 @@
             <label class="form-label" for="f-reason">Motivo de cancelación <span class="form-required">*</span></label>
             <textarea id="f-reason" class="form-input form-textarea" formControlName="reason" placeholder="Ej: Paciente no pudo llegar"></textarea>
             @if (form.get('reason')?.invalid && form.get('reason')?.touched) {
-              <p class="form-error">El motivo es requerido</p>
+              <p class="form-error">El motivo es requerido (mínimo 3 caracteres)</p>
             }
           </div>
         }

@@ -3,23 +3,23 @@ import { AppointmentStatus } from './appointment.enums';
 export interface AppointmentResponse {
   id: number;
   companyId: number;
-  companyName?: string;
   branchId: number;
-  branchName?: string;
   contactId: number;
-  contactName?: string;
+  doctorId: number;
+  doctorName?: string;
   scheduledStart: string;
   scheduledEnd: string;
   notes?: string;
   status: AppointmentStatus;
-  cancelReason?: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreateAppointmentRequestDto {
   companyId: number;
   branchId: number;
   contactId: number;
+  doctorId: number;
   scheduledStart: string;
   scheduledEnd: string;
   notes?: string;
@@ -32,7 +32,7 @@ export interface RescheduleAppointmentRequestDto {
 }
 
 export interface CancelAppointmentRequestDto {
-  reason: string;
+  reason?: string;
 }
 
 export interface AvailableSlot {

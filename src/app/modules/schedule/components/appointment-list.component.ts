@@ -32,20 +32,21 @@ export class AppointmentListComponent {
 
   statusClass(status: AppointmentStatus): string {
     const map: Record<AppointmentStatus, string> = {
-      [AppointmentStatus.PENDING]: 'badge--warning',
+      [AppointmentStatus.SCHEDULED]: 'badge--warning',
       [AppointmentStatus.CONFIRMED]: 'badge--info',
       [AppointmentStatus.COMPLETED]: 'badge--success',
       [AppointmentStatus.CANCELLED]: 'badge--danger',
-      [AppointmentStatus.NO_SHOW]: 'badge--neutral',
+      [AppointmentStatus.RESCHEDULED]: 'badge--neutral',
     };
     return map[status] ?? 'badge--neutral';
   }
 
   canReschedule(status: AppointmentStatus): boolean {
-    return status === AppointmentStatus.PENDING || status === AppointmentStatus.CONFIRMED;
+    return status === AppointmentStatus.SCHEDULED || status === AppointmentStatus.CONFIRMED;
   }
 
   canCancel(status: AppointmentStatus): boolean {
-    return status === AppointmentStatus.PENDING || status === AppointmentStatus.CONFIRMED;
+    return status === AppointmentStatus.SCHEDULED || status === AppointmentStatus.CONFIRMED;
   }
 }
+
