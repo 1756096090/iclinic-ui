@@ -1,9 +1,9 @@
 /**
  * Constantes de endpoints de la API
- * 
+ *
  * Nota: Las URLs usan rutas relativas. El HttpService
  * automáticamente prependerá la URL base desde ConfigService.
- * 
+ *
  * Ejemplo: 'users' se convertirá en:
  * http://localhost:8080/api/v1/users (basado en env.json)
  */

@@ -53,10 +53,10 @@
           <!-- Doctor -->
           <div class="form-field">
             <label class="form-label" for="f-doctor">Doctor <span class="form-required">*</span></label>
-            <select 
-              id="f-doctor" 
-              class="form-input" 
-              formControlName="doctorId" 
+            <select
+              id="f-doctor"
+              class="form-input"
+              formControlName="doctorId"
               (change)="onBranchDateChange()"
               [disabled]="loadingDoctors() || doctors().length === 0"
             >
@@ -82,11 +82,11 @@
           <div class="form-field">
             <label class="form-label" for="f-contact-search">Contacto <span class="form-required">*</span></label>
             <div class="contact-search-wrapper">
-              <input 
-                id="f-contact-search" 
-                type="text" 
-                class="form-input" 
-                placeholder="Buscar por nombre o email..." 
+              <input
+                id="f-contact-search"
+                type="text"
+                class="form-input"
+                placeholder="Buscar por nombre o email..."
                 [value]="contactSearchQuery()"
                 (input)="onContactSearch($any($event.target).value)"
                 [disabled]="!currentBranchId()"

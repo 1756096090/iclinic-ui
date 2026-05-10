@@ -167,7 +167,7 @@ export class AppointmentFormComponent implements OnInit, OnDestroy {
       next: (users) => {
         console.log('✅ Usuarios recibidos del backend:', users);
         console.log('📊 Total usuarios:', users.length);
-        
+
         if (!users || users.length === 0) {
           console.warn('⚠️ No hay usuarios en esta sucursal');
           this.doctors.set([]);
@@ -185,16 +185,16 @@ export class AppointmentFormComponent implements OnInit, OnDestroy {
           console.log(`   → ${u.fullName}: role="${u.role}" === "DENTIST" ? ${isDentist}`);
           return isDentist;
         });
-        
+
         console.log('🎯 Doctores encontrados:', doctors.length);
         console.log('📋 Lista de doctores:', doctors);
         this.doctors.set(doctors);
         this.loadingDoctors.set(false);
       },
-      error: (err) => { 
+      error: (err) => {
         console.error('❌ Error en getUsersByBranch:', err);
         this.doctors.set([]);
-        this.loadingDoctors.set(false); 
+        this.loadingDoctors.set(false);
       },
     });
   }
@@ -249,7 +249,7 @@ export class AppointmentFormComponent implements OnInit, OnDestroy {
     }
 
     const date = start.slice(0, 10);
-    
+
     // Validar formato de fecha
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
       this.availableSlots.set([]);
@@ -258,13 +258,13 @@ export class AppointmentFormComponent implements OnInit, OnDestroy {
 
     this.loadingSlots.set(true);
     this.appointmentService.getAvailableSlots(branchId, doctorId, date).subscribe({
-      next: (slots) => { 
-        this.availableSlots.set(slots); 
-        this.loadingSlots.set(false); 
+      next: (slots) => {
+        this.availableSlots.set(slots);
+        this.loadingSlots.set(false);
       },
-      error: () => { 
+      error: () => {
         this.availableSlots.set([]);
-        this.loadingSlots.set(false); 
+        this.loadingSlots.set(false);
       },
     });
   }
