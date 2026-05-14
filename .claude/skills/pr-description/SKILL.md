@@ -1,6 +1,12 @@
 ---
+<!--Name(Obligatorio): 64 caracteres-->
 name: pr-description
+<!--Description(Obligatorio): 1024 caracteres-->
 description: Write a pull request description. Use when create a PR, or when the user asks to summarize changes for a pull request.
+<!--Allowed tools(Obligatorio): 1024 caracteres-->
+allowed-tools: Bash, Read
+model: sunnet
+
 ---
 
 When writing a PR description:
