@@ -16,6 +16,9 @@ yarn-error.log
 .env.*
 !.env.example
 
+# Firebase configuration with API keys
+src/app/core/firebase/firebase.config.ts
+
 # IDEs and editors
 .idea/
 .project
