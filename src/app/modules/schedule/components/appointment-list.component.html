@@ -19,8 +19,11 @@
         </div>
 
         <div class="appt-card__body">
-          <p class="appt-card__contact">{{ appt.contactName ?? ('Contacto #' + appt.contactId) }}</p>
-          <p class="appt-card__branch">{{ appt.branchName ?? ('Sucursal #' + appt.branchId) }}</p>
+          <p class="appt-card__contact">Contacto #{{ appt.contactId }}</p>
+          @if (appt.doctorName) {
+            <p class="appt-card__doctor">Dr. {{ appt.doctorName }}</p>
+          }
+          <p class="appt-card__branch">Sucursal #{{ appt.branchId }}</p>
           @if (appt.notes) {
             <p class="appt-card__notes">{{ appt.notes }}</p>
           }

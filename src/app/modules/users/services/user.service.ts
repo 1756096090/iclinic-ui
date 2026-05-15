@@ -52,6 +52,15 @@ export class UserService {
   }
 
   /**
+   * Busca usuarios en una sucursal por texto
+   */
+  searchUsersByBranch(branchId: number, query: string): Observable<UserResponse[]> {
+    return this.http.get<UserResponse[]>(
+      `${API_ENDPOINTS.USERS.SEARCH}?branchId=${branchId}&query=${encodeURIComponent(query)}&limit=20`
+    );
+  }
+
+  /**
    * Crea un nuevo usuario
    */
   createUser(

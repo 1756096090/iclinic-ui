@@ -1,15 +1,15 @@
 export enum AppointmentStatus {
-  PENDING = 'PENDING',
+  SCHEDULED = 'SCHEDULED',
   CONFIRMED = 'CONFIRMED',
   COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED',
-  NO_SHOW = 'NO_SHOW',
+  RESCHEDULED = 'RESCHEDULED',
 }
 
 export const APPOINTMENT_STATUS_DISPLAY_NAMES: Record<AppointmentStatus, string> = {
-  [AppointmentStatus.PENDING]: 'Pendiente',
+  [AppointmentStatus.SCHEDULED]: 'Programada',
   [AppointmentStatus.CONFIRMED]: 'Confirmada',
   [AppointmentStatus.COMPLETED]: 'Completada',
   [AppointmentStatus.CANCELLED]: 'Cancelada',
-  [AppointmentStatus.NO_SHOW]: 'No se presentó',
+  [AppointmentStatus.RESCHEDULED]: 'Reprogramada',
 };

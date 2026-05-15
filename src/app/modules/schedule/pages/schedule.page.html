@@ -76,8 +76,7 @@
                   {{ appointment.scheduledEnd | date:'HH:mm' }}
                 </span>
                 <span class="day-slot__meta">
-                  <span class="day-slot__contact">{{ appointment.contactName ?? ('Contacto #' + appointment.contactId) }}</span>
-                  <span class="day-slot__status">{{ appointment.status }}</span>
+                  <span class="day-slot__contact">Contacto #{{ appointment.contactId }}</span>
                 </span>
               </button>
             }

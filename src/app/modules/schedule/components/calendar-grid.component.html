@@ -28,7 +28,7 @@
               <span
                 class="cal-dot"
                 [class]="'cal-dot--' + appt.status.toLowerCase()"
-                [title]="appt.contactName ?? 'Cita'"
+                [title]="appt.doctorName ? 'Dr. ' + appt.doctorName : 'Cita'"
               ></span>
             }
             @if (day.appointments.length > 3) {

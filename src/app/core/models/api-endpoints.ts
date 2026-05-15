@@ -1,9 +1,9 @@
 /**
  * Constantes de endpoints de la API
- * 
+ *
  * Nota: Las URLs usan rutas relativas. El HttpService
  * automáticamente prependerá la URL base desde ConfigService.
- * 
+ *
  * Ejemplo: 'users' se convertirá en:
  * http://localhost:8080/api/v1/users (basado en env.json)
  */
@@ -27,6 +27,7 @@ export const API_ENDPOINTS = {
     DELETE: (id: number) => `users/${id}`,
     GET_BY_COMPANY: (companyId: number) => `users/company/${companyId}`,
     GET_BY_BRANCH: (branchId: number) => `users/branch/${branchId}`,
+    SEARCH: 'users/search',
   },
 
   // Companies
@@ -93,8 +94,8 @@ export const API_ENDPOINTS = {
     GET_BY_CONTACT: (contactId: number) => `appointments/contact/${contactId}`,
     RESCHEDULE: (id: number) => `appointments/${id}/reschedule`,
     CANCEL: (id: number) => `appointments/${id}/cancel`,
-    AVAILABLE_SLOTS: (branchId: number, date: string) =>
-      `appointments/available-slots?branchId=${branchId}&date=${date}`,
+    AVAILABLE_SLOTS: (branchId: number, doctorId: number, date: string) =>
+      `appointments/available-slots?branchId=${branchId}&doctorId=${doctorId}&date=${date}`,
   },
 
   // Channel Connections

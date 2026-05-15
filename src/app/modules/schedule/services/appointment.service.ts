@@ -26,8 +26,8 @@ export class AppointmentService {
     return this.http.get<AppointmentResponse[]>(API_ENDPOINTS.APPOINTMENTS.GET_BY_CONTACT(contactId));
   }
 
-  getAvailableSlots(branchId: number, date: string): Observable<AvailableSlot[]> {
-    return this.http.get<AvailableSlot[]>(API_ENDPOINTS.APPOINTMENTS.AVAILABLE_SLOTS(branchId, date));
+  getAvailableSlots(branchId: number, doctorId: number, date: string): Observable<AvailableSlot[]> {
+    return this.http.get<AvailableSlot[]>(API_ENDPOINTS.APPOINTMENTS.AVAILABLE_SLOTS(branchId, doctorId, date));
   }
 
   create(request: CreateAppointmentRequestDto): Observable<AppointmentResponse> {
@@ -39,6 +39,9 @@ export class AppointmentService {
   }
 
   cancel(id: number, request: CancelAppointmentRequestDto): Observable<AppointmentResponse> {
-    return this.http.put<AppointmentResponse>(API_ENDPOINTS.APPOINTMENTS.CANCEL(id), request);
+    return this.http.delete<AppointmentResponse>(
+      API_ENDPOINTS.APPOINTMENTS.CANCEL(id),
+      { body: request }
+    );
   }
 }
